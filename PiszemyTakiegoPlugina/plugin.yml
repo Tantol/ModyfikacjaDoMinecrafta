@@ -3,3 +3,9 @@ name: PluginDungeon
 version: 1.0
 author: me
 description: An Example plugin
+commands:
+  jebiecimatke:
+    description: An example command
+    usage: /jebiecimatke
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
