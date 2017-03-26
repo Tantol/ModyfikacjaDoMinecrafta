@@ -3,9 +3,16 @@ name: PluginDungeon
 version: 1.0
 author: me
 description: An Example plugin
+depend: [Vault]
 commands:
   jebiecimatke:
     description: An example command
     usage: /jebiecimatke
     permission: pluginmc.pluje
     permission-message: You don't have the myplugin.mycommand permission.
+  ooc:
+    description: An example command
+    usage: /ooc
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+

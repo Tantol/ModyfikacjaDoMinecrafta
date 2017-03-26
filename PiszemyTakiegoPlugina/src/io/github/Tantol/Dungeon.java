@@ -15,9 +15,13 @@ public class Dungeon extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 		getCommand("jebiecimatke").setExecutor(new Test());
-		//registerEvents(this, new ListenerClass()); template Listener
+		getCommand("ooc").setExecutor(new RpChat());
+		registerEvents(this, new RpChat());
+		//registerEvents(this, new ListenerClass());
 		//getCommand("hi").setExecutor(new Command()); template Command
-		//getCommand("hello").setExecutor(new Both()); template Both
+		//getCommand("testchat").setExecutor(new Both());
+		//registerEvents(this, new Both());
+
 	}
 
 	@Override
