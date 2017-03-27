@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -23,10 +22,10 @@ public class RpChat implements CommandExecutor, Listener {
 
 	public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmnd, String string, String[] strings) {
 		Player s = (Player) cs;
-		String msg = null;
-		for(int i = 1; i < strings.length; i++)
+		String msg = "";
+		for(int i = 0; i < strings.length; i++)
 		{
-		    msg+=" "+strings[i];
+		    msg+=strings[i]+" ";
 		}
 		if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length<1) {
 			// s.sendMessage("Debug: ooc");
@@ -37,7 +36,8 @@ public class RpChat implements CommandExecutor, Listener {
 			ooc.add(s);
 		}
 		if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length>=1) {
-
+			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
+			message(4000, s, msg, "[OOC]");
 		}
 		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length<1) {
 			// s.sendMessage("Debug: ic");
@@ -48,7 +48,7 @@ public class RpChat implements CommandExecutor, Listener {
 			ic.add(s);
 		}
 		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length>=1) {
-			
+			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
 			message(30, s, msg, "[IC]");
 		}
 		if (cmnd.getName().equalsIgnoreCase("s") && strings.length<1) {
@@ -59,6 +59,10 @@ public class RpChat implements CommandExecutor, Listener {
 			me.remove(s);
 			shout.add(s);
 		}
+		if (cmnd.getName().equalsIgnoreCase("s") && strings.length>=1) {
+			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
+			message(60, s, msg, "[SHOUT]");
+		}
 		if (cmnd.getName().equalsIgnoreCase("w") && strings.length<1) {
 			// s.sendMessage("Debug: whisper");
 			ic.remove(s);
@@ -67,6 +71,10 @@ public class RpChat implements CommandExecutor, Listener {
 			me.remove(s);
 			whisper.add(s);
 		}
+		if (cmnd.getName().equalsIgnoreCase("w") && strings.length>=1) {
+			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
+			message(5, s, msg, "[WHISPER]");
+		}
 		if (cmnd.getName().equalsIgnoreCase("me") && strings.length<1) {
 			// s.sendMessage("Debug: whisper");
 			ic.remove(s);
@@ -74,6 +82,10 @@ public class RpChat implements CommandExecutor, Listener {
 			ooc.remove(s);
 			whisper.remove(s);
 			me.add(s);
+		}
+		if (cmnd.getName().equalsIgnoreCase("me") && strings.length>=1) {
+			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
+			me(30, s, msg);
 		}
 		return true;
 	}
