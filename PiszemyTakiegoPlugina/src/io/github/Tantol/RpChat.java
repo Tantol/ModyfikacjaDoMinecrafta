@@ -77,16 +77,6 @@ public class RpChat implements CommandExecutor, Listener {
 		else if (ic.contains(p)) {
 			event.setFormat(ChatColor.RED + "[IC] " + ChatColor.WHITE + "%s" + ": " + "%s");
 			//p.sendMessage("Debug Player = IC " +  ic.contains(p));
-			for(Player other : event.getRecipients()){
-				
-				if(other.getLocation().distance(player_loc) < 30 && other.getLocation()!=null){
-					other.sendMessage(event.getMessage());
-				}
-				else{
-					p.sendMessage("Nikt cie nie slyszal");
-					
-				}
-			}
 		}
 		else if (whisper.contains(p)) {
 			event.setFormat(ChatColor.RED + "[WHISPER] " + ChatColor.WHITE + "%s" + ": " + "%s");
@@ -100,7 +90,16 @@ public class RpChat implements CommandExecutor, Listener {
 			//p.sendMessage("Debug Player = OOC " +  ooc.contains(p) + " IC " +  ic.contains(p)+ " WHISPER " +  whisper.contains(p)+  " SHOUT " + shout.contains(p));
 		}
 		
-		
+		/*for(Player other : event.getRecipients()){
+			
+			if(other.getLocation().distance(player_loc) < 30){
+				other.sendMessage(event.getMessage());
+			}
+			else{
+				p.sendMessage("Nikt cie nie slyszal");
+				
+			}
+		}*/
 				
 	}
 }
