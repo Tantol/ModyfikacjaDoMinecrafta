@@ -16,6 +16,9 @@ public class Dungeon extends JavaPlugin {
 		plugin = this;
 		getCommand("jebiecimatke").setExecutor(new Test());
 		getCommand("ooc").setExecutor(new RpChat());
+		getCommand("ic").setExecutor(new RpChat());
+		getCommand("s").setExecutor(new RpChat());
+		getCommand("w").setExecutor(new RpChat());
 		registerEvents(this, new RpChat());
 		//registerEvents(this, new ListenerClass());
 		//getCommand("hi").setExecutor(new Command()); template Command

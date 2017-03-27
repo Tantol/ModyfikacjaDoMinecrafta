@@ -15,4 +15,19 @@ commands:
     usage: /ooc
     permission: pluginmc.pluje
     permission-message: You don't have the myplugin.mycommand permission.
+  ic:
+    description: An example command
+    usage: /ic
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+  w:
+    description: An example command
+    usage: /w
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+  s:
+    description: An example command
+    usage: /s
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
 
