@@ -30,4 +30,10 @@ commands:
     usage: /s
     permission: pluginmc.pluje
     permission-message: You don't have the myplugin.mycommand permission.
+  me:
+    description: An example command
+    usage: /me
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+
 
