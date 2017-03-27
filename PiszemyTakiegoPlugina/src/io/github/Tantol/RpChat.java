@@ -28,6 +28,13 @@ public class RpChat implements CommandExecutor, Listener {
 	int me_range = 30;
 	int narrator_range = 300;
 	int gnarrator_range = 4000;
+	String ooc_str = ChatColor.RED + "[OOC]";
+	String ic_str =  ChatColor.GREEN + "[IC]";
+	String shout_str =  ChatColor.BLUE + "[SHOUT]";
+	String whisper_str = ChatColor.GRAY + "[WHISPER]";
+	String me_str = ChatColor.YELLOW + "";
+	String narrator_str =  ChatColor.AQUA + "[NARRATOR]";
+	String gnarrator_str = ChatColor.AQUA + "[NARRATOR GLOBALNY]";
 
 	public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmnd, String string, String[] strings) {
 		Player s = (Player) cs;
@@ -47,7 +54,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(ooc_range, s, msg, ChatColor.RED + "[OOC]");
+			message(ooc_range, s, msg, ooc_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length < 1) {
 			// s.sendMessage("Debug: ic");
@@ -61,7 +68,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(ic_range, s, msg, ChatColor.GREEN + "[IC]");
+			message(ic_range, s, msg, ic_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("s") && strings.length < 1) {
 			// s.sendMessage("Debug: shout");
@@ -75,7 +82,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("s") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(shout_range, s, msg, ChatColor.BLUE + "[SHOUT]");
+			message(shout_range, s,msg, shout_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("w") && strings.length < 1) {
 			// s.sendMessage("Debug: whisper");
@@ -89,7 +96,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("w") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(whisper_range, s, msg, ChatColor.GRAY + "[WHISPER]");
+			message(whisper_range, s, msg, whisper_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("n") && strings.length < 1) {
 			// s.sendMessage("Debug: whisper");
@@ -103,7 +110,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("n") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(narrator_range, s, msg, ChatColor.AQUA + "[NARRATOR]");
+			narrator(narrator_range, s, msg, narrator_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("ng") && strings.length < 1) {
 			// s.sendMessage("Debug: whisper");
@@ -117,7 +124,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("ng") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(gnarrator_range, s, msg, ChatColor.AQUA + "[NARRATOR GLOBALNY]");
+			narrator(gnarrator_range, s, msg, gnarrator_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("me") && strings.length < 1) {
 			// s.sendMessage("Debug: whisper");
@@ -129,7 +136,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("me") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			me(me_range, s, msg);
+			me(me_range, s, msg, me_str);
 		}
 		return true;
 	}
@@ -144,25 +151,25 @@ public class RpChat implements CommandExecutor, Listener {
 			ic.add(p);
 		}
 		if (ooc.contains(p)) {
-			message(ooc_range, p, s, ChatColor.RED + "[OOC]");
+			message(ooc_range, p, s, ooc_str);
 		}
 		if (ic.contains(p)) {
-			message(ic_range, p, s, ChatColor.GREEN + "[IC]");
+			message(ic_range, p, s, ic_str);
 		}
 		if (whisper.contains(p)) {
-			message(whisper_range, p, s, ChatColor.GRAY + "[WHISPER]");
+			message(whisper_range, p, s, whisper_str);
 		}
 		if (shout.contains(p)) {
-			message(shout_range, p, s, ChatColor.BLUE + "[SHOUT]");
+			message(shout_range, p, s, shout_str);
 		}
 		if (me.contains(p)) {
-			me(me_range, p, s);
+			me(me_range, p, s, me_str);
 		}
 		if (narrator.contains(p)) {
-			message(narrator_range, p, s, ChatColor.AQUA + "[NARRATOR]");
+			narrator(narrator_range, p, s, narrator_str);
 		}
 		if (gnarrator.contains(p)) {
-			message(gnarrator_range, p, s, ChatColor.AQUA + "[NARRATOR GLOBALNY]");
+			narrator(gnarrator_range, p, s, gnarrator_str);
 		}
 		event.setCancelled(true);
 	}
@@ -202,7 +209,7 @@ public class RpChat implements CommandExecutor, Listener {
 		rec = new ArrayList<Player>();
 	}
 
-	public void me(int distance, Player p, String s) {
+	public void me(int distance, Player p, String s, String chatType) {
 		int flaga = 0;
 		int flaga2 = 0;
 		int sprawdz = 0;
@@ -215,9 +222,44 @@ public class RpChat implements CommandExecutor, Listener {
 				// rec.get(i).sendMessage("test " +
 				// rec.get(i).getLocation().distance(player_loc));
 
-				rec.get(i).sendMessage(ChatColor.YELLOW + p.getName() + " " + s);
+				rec.get(i).sendMessage(chatType + p.getName() + " " + s);
 				if (flaga2 == 0) {
-					p.sendMessage(ChatColor.YELLOW + p.getName() + " " + s);
+					p.sendMessage(chatType + p.getName() + " " + s);
+					flaga2 = 1;
+				}
+				flaga = 1;
+			}
+			if (flaga == 0 && rec.get(i).getLocation().distance(player_loc) != 0) {
+				sprawdz += 1;
+			}
+		}
+		if (sprawdz == rec.size() - 1) {
+			p.sendMessage(
+					ChatColor.RED + "[!] " + chatType + "Nikt nie widzial co robisz" + ChatColor.RED + " [!]");
+			// p.sendMessage("flaga " + sprawdz);
+		}
+		flaga = 0;
+		flaga2 = 0;
+		sprawdz = 0;
+		rec = new ArrayList<Player>();
+	}
+
+	public void narrator(int distance, Player p, String s, String chatType) {
+		int flaga = 0;
+		int flaga2 = 0;
+		int sprawdz = 0;
+		Location player_loc = p.getLocation();
+		for (int i = 0; i < rec.size(); i++) {
+			// p.sendMessage("test " +
+			// rec.get(i).getLocation().distance(player_loc));
+			if (rec.get(i).getLocation().distance(player_loc) < distance
+					&& rec.get(i).getLocation().distance(player_loc) > 0) {
+				// rec.get(i).sendMessage("test " +
+				// rec.get(i).getLocation().distance(player_loc));
+
+				rec.get(i).sendMessage(chatType+  ChatColor.WHITE  + ": " + s);
+				if (flaga2 == 0) {
+					p.sendMessage(chatType + ChatColor.WHITE + ": " + s);
 					flaga2 = 1;
 				}
 				flaga = 1;
@@ -236,5 +278,4 @@ public class RpChat implements CommandExecutor, Listener {
 		sprawdz = 0;
 		rec = new ArrayList<Player>();
 	}
-
 }
