@@ -140,7 +140,7 @@ public class RpChat implements CommandExecutor, Listener {
 		Player p = event.getPlayer();
 		rec = new ArrayList<Player>(event.getRecipients());
 		String s = event.getMessage();
-		if (!ooc.contains(p) && !ic.contains(p) && !shout.contains(p) && !whisper.contains(p) && !me.contains(p)) {
+		if (!ooc.contains(p) && !ic.contains(p) && !shout.contains(p) && !whisper.contains(p) && !me.contains(p) && !narrator.contains(p)  && !gnarrator.contains(p)) {
 			ic.add(p);
 		}
 		if (ooc.contains(p)) {
