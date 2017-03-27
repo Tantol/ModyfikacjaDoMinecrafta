@@ -69,6 +69,7 @@ public class RpChat implements CommandExecutor, Listener {
 	public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player p = event.getPlayer();
 		int flaga = 0;
+		int sprawdz = 0;
 		Location player_loc = p.getLocation();
 		ArrayList<Player> rec = new ArrayList<Player>(event.getRecipients());
 		for(int i=1; i<rec.size();i++){
@@ -77,14 +78,16 @@ public class RpChat implements CommandExecutor, Listener {
 				p.sendMessage("test "+ rec.get(i).getLocation().distance(player_loc));
 				flaga = 1;
 			}
-			//if(rec.get(i).getLocation().distance(player_loc)== 0)
-			if(flaga==0){
-				p.sendMessage("Nikt cie nie slyszal");
-				p.sendMessage("test "+ rec.get(i).getLocation().distance(player_loc));
-				
+			if(flaga == 0)
+			{
+				sprawdz+=1;
 			}
-		
 		}
+		if(sprawdz==rec.size()-1){
+			p.sendMessage("Nikt Cie nie slyszal");
+		}
+		
+		flaga = 0;
 		if (ooc.contains(p)) {
 			event.setFormat(ChatColor.RED + "[OOC] " + ChatColor.WHITE + "%s" + ": " + "%s");
 			//p.sendMessage("Debug Player =  OOC " +  ooc.contains(p));
