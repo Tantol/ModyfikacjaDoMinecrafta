@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class RpChat implements CommandExecutor, Listener {
-
 	private static ArrayList<Player> ooc = new ArrayList<Player>();
 	private static ArrayList<Player> ic = new ArrayList<Player>();
 	private static ArrayList<Player> shout = new ArrayList<Player>();
@@ -21,21 +20,30 @@ public class RpChat implements CommandExecutor, Listener {
 	private static ArrayList<Player> rec = new ArrayList<Player>();
 	private static ArrayList<Player> narrator = new ArrayList<Player>();
 	private static ArrayList<Player> gnarrator = new ArrayList<Player>();
-	int ooc_range = 4000;
-	int ic_range = 30;
-	int shout_range = 60;
-	int whisper_range = 5;
-	int me_range = 30;
-	int narrator_range = 300;
-	int gnarrator_range = 4000;
-	String ooc_str = ChatColor.RED + "[OOC]";
-	String ic_str =  ChatColor.GREEN + "[IC]";
-	String shout_str =  ChatColor.BLUE + "[SHOUT]";
-	String whisper_str = ChatColor.GRAY + "[WHISPER]";
-	String me_str = ChatColor.YELLOW + "";
-	String narrator_str =  ChatColor.AQUA + "[NARRATOR]";
-	String gnarrator_str = ChatColor.AQUA + "[NARRATOR GLOBALNY]";
-
+	
+	/*
+	 * Tutaj Poin¿ej Edytowaæ
+	 */
+	private int ooc_range = 4000;
+	private int ic_range = 30;
+	private int shout_range = 60;
+	private int whisper_range = 5;
+	private int me_range = 30;
+	private int narrator_range = 300;
+	private int gnarrator_range = 4000;
+	private String ooc_str = ChatColor.RED + "[OOC]";
+	private String ic_str = ChatColor.GREEN + "[IC]";
+	private String shout_str = ChatColor.BLUE + "[SHOUT]";
+	private String whisper_str = ChatColor.GRAY + "[WHISPER]";
+	private String me_str = ChatColor.YELLOW + "";
+	private String narrator_str = ChatColor.AQUA + "[NARRATOR]";
+	private String gnarrator_str = ChatColor.AQUA + "[NARRATOR GLOBALNY]";
+	
+	
+	
+	/*
+	 * Tego co pod tym lepiej nie tykaæ jak nie wiesz co i jak ^^
+	 */
 	public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmnd, String string, String[] strings) {
 		Player s = (Player) cs;
 		String msg = "";
@@ -82,7 +90,7 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (cmnd.getName().equalsIgnoreCase("s") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(shout_range, s,msg, shout_str);
+			message(shout_range, s, msg, shout_str);
 		}
 		if (cmnd.getName().equalsIgnoreCase("w") && strings.length < 1) {
 			// s.sendMessage("Debug: whisper");
@@ -234,8 +242,7 @@ public class RpChat implements CommandExecutor, Listener {
 			}
 		}
 		if (sprawdz == rec.size() - 1) {
-			p.sendMessage(
-					ChatColor.RED + "[!] " + chatType + "Nikt nie widzial co robisz" + ChatColor.RED + " [!]");
+			p.sendMessage(ChatColor.RED + "[!] " + chatType + "Nikt nie widzial co robisz" + ChatColor.RED + " [!]");
 			// p.sendMessage("flaga " + sprawdz);
 		}
 		flaga = 0;
@@ -257,7 +264,7 @@ public class RpChat implements CommandExecutor, Listener {
 				// rec.get(i).sendMessage("test " +
 				// rec.get(i).getLocation().distance(player_loc));
 
-				rec.get(i).sendMessage(chatType+  ChatColor.WHITE  + ": " + s);
+				rec.get(i).sendMessage(chatType + ChatColor.WHITE + ": " + s);
 				if (flaga2 == 0) {
 					p.sendMessage(chatType + ChatColor.WHITE + ": " + s);
 					flaga2 = 1;
