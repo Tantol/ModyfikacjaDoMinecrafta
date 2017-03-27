@@ -35,5 +35,16 @@ commands:
     usage: /me
     permission: pluginmc.pluje
     permission-message: You don't have the myplugin.mycommand permission.
+  n:
+    description: An example command
+    usage: /n
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+  ng:
+    description: An example command
+    usage: /ng
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
+
 
 

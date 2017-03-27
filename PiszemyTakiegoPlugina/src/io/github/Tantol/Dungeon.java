@@ -20,6 +20,8 @@ public class Dungeon extends JavaPlugin {
 		getCommand("s").setExecutor(new RpChat());
 		getCommand("w").setExecutor(new RpChat());
 		getCommand("me").setExecutor(new RpChat());
+		getCommand("ng").setExecutor(new RpChat());
+		getCommand("n").setExecutor(new RpChat());
 		registerEvents(this, new RpChat());
 		//registerEvents(this, new ListenerClass());
 		//getCommand("hi").setExecutor(new Command()); template Command
