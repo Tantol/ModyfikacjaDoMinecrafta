@@ -68,16 +68,20 @@ public class RpChat implements CommandExecutor, Listener {
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player p = event.getPlayer();
+		int flaga = 0;
 		Location player_loc = p.getLocation();
 		ArrayList<Player> rec = new ArrayList<Player>(event.getRecipients());
-		for(int i=0; i<rec.size();i++){
+		for(int i=1; i<rec.size();i++){
 			if(rec.get(i).getLocation().distance(player_loc)<30 && rec.get(i).getLocation().distance(player_loc)>0){
-				
 				rec.get(i).sendMessage("test "+ rec.get(i).getLocation().distance(player_loc));
+				p.sendMessage("test "+ rec.get(i).getLocation().distance(player_loc));
+				flaga = 1;
 			}
-			if(rec.get(i).getLocation().distance(player_loc)== 0)
-			{
+			//if(rec.get(i).getLocation().distance(player_loc)== 0)
+			if(flaga==0){
 				p.sendMessage("Nikt cie nie slyszal");
+				p.sendMessage("test "+ rec.get(i).getLocation().distance(player_loc));
+				
 			}
 		
 		}
