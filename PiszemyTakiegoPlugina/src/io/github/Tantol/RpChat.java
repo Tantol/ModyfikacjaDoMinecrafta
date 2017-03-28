@@ -1,7 +1,6 @@
 package io.github.Tantol;
 
 import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
@@ -12,20 +11,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class RpChat implements CommandExecutor, Listener {
-	private static ArrayList<Player> ooc = new ArrayList<Player>();
-	private static ArrayList<Player> ic = new ArrayList<Player>();
+	private static ArrayList<ChatOb> chat = new ArrayList<ChatOb>();
+	
+//	private static ArrayList<Player> ooc = new ArrayList<Player>();
+/*	private static ArrayList<Player> ic = new ArrayList<Player>();
 	private static ArrayList<Player> shout = new ArrayList<Player>();
 	private static ArrayList<Player> whisper = new ArrayList<Player>();
 	private static ArrayList<Player> me = new ArrayList<Player>();
-	private static ArrayList<Player> rec = new ArrayList<Player>();
 	private static ArrayList<Player> narrator = new ArrayList<Player>();
-	private static ArrayList<Player> gnarrator = new ArrayList<Player>();
-	
+	private static ArrayList<Player> gnarrator = new ArrayList<Player>();*/
+	private static ArrayList<Player> rec = new ArrayList<Player>();
+
 	/*
 	 * Tutaj Poin¿ej Edytowaæ
 	 */
-	private int ooc_range = 4000;
-	private int ic_range = 30;
+
+	//private int ooc_range = 4000;
+	/*private int ic_range = 30;
 	private int shout_range = 60;
 	private int whisper_range = 5;
 	private int me_range = 30;
@@ -39,8 +41,17 @@ public class RpChat implements CommandExecutor, Listener {
 	private String narrator_str = ChatColor.AQUA + "[NARRATOR]";
 	private String gnarrator_str = ChatColor.AQUA + "[NARRATOR GLOBALNY]";
 	
-	
-	
+	*/
+	public RpChat(){
+		chat.add( new ChatOb("ic",30,ChatColor.RED + "[IC]", new ArrayList<Player>(),"msg"));
+		chat.add( new ChatOb("ooc",4000,ChatColor.RED + "[OOC]", new ArrayList<Player>(),"msg"));
+		chat.add( new ChatOb("w",5,ChatColor.RED + "[WHISPER]", new ArrayList<Player>(),"msg"));
+		chat.add( new ChatOb("s",60,ChatColor.RED + "[SHOUT]", new ArrayList<Player>(),"msg"));
+		chat.add( new ChatOb("me",30,ChatColor.YELLOW + "", new ArrayList<Player>(),"me"));
+		chat.add( new ChatOb("n",300,ChatColor.YELLOW + "[NARRATOR]", new ArrayList<Player>(),"nar"));
+		chat.add( new ChatOb("ng",4000,ChatColor.YELLOW + "[NARRATOR GLOBALNY]", new ArrayList<Player>(),"nar"));
+		
+	}
 	/*
 	 * Tego co pod tym lepiej nie tykaæ jak nie wiesz co i jak ^^
 	 */
@@ -50,7 +61,7 @@ public class RpChat implements CommandExecutor, Listener {
 		for (int i = 0; i < strings.length; i++) {
 			msg += strings[i] + " ";
 		}
-		if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length < 1) {
+	/*	if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length < 1) {
 			// s.sendMessage("Debug: ooc");
 			ic.remove(s);
 			shout.remove(s);
@@ -58,23 +69,44 @@ public class RpChat implements CommandExecutor, Listener {
 			me.remove(s);
 			narrator.remove(s);
 			gnarrator.remove(s);
-			ooc.add(s);
-		}
-		if (cmnd.getName().equalsIgnoreCase("ooc") && strings.length >= 1) {
+			//ooc.add(s);
+			for(int i =0 ; i<chat.size(); i++)
+			{
+				chat.get(i).getList().add(s);
+			}
+		}*/
+		int flaga = 0;
+		for(int i =0 ; i<chat.size(); i++)
+		{
+		if (cmnd.getName().equalsIgnoreCase(chat.get(i).getCmd()) && strings.length >= 1 && flaga==0) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
-			message(ooc_range, s, msg, ooc_str);
+			if(chat.get(i).getType()=="msg")
+			message(chat.get(i).getRange(), s, msg, chat.get(i).getPref());
+			if(chat.get(i).getType()=="me")
+				me(chat.get(i).getRange(), s, msg, chat.get(i).getPref());
+			if(chat.get(i).getType()=="nar")
+				narrator(chat.get(i).getRange(), s, msg, chat.get(i).getPref());
+			flaga=1;
 		}
-		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length < 1) {
+		if (cmnd.getName().equalsIgnoreCase(chat.get(i).getCmd()) && strings.length < 1) {
 			// s.sendMessage("Debug: ic");
-			ooc.remove(s);
+		/*	ooc.remove(s);
 			shout.remove(s);
 			whisper.remove(s);
 			me.remove(s);
 			narrator.remove(s);
 			gnarrator.remove(s);
-			ic.add(s);
+			ic.add(s);*/
+			for(int j =0 ; j<chat.size(); j++)
+			{
+				chat.get(j).getList().remove(s);
+			}
+			chat.get(i).getList().add(s);
+			
 		}
-		if (cmnd.getName().equalsIgnoreCase("ic") && strings.length >= 1) {
+		}
+		flaga=0;
+		/*	if (cmnd.getName().equalsIgnoreCase("ic") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
 			message(ic_range, s, msg, ic_str);
 		}
@@ -145,22 +177,42 @@ public class RpChat implements CommandExecutor, Listener {
 		if (cmnd.getName().equalsIgnoreCase("me") && strings.length >= 1) {
 			rec = new ArrayList<Player>(Dungeon.getPlugin().getServer().getOnlinePlayers());
 			me(me_range, s, msg, me_str);
-		}
+	}*/	
 		return true;
 	}
-
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player p = event.getPlayer();
 		rec = new ArrayList<Player>(event.getRecipients());
 		String s = event.getMessage();
-		if (!ooc.contains(p) && !ic.contains(p) && !shout.contains(p) && !whisper.contains(p) && !me.contains(p)
-				&& !narrator.contains(p) && !gnarrator.contains(p)) {
+		int flaga=0;
+		for(int i =0 ; i<chat.size(); i++)
+		{
+			if(!chat.get(i).getList().contains(p)){
+				flaga++;
+			}
+		}
+		if(flaga==chat.size()){
+			chat.get(0).getList().add(p);
+		}
+		
+		/*if (!ooc.contains(p) && !ic.contains(p) && !shout.contains(p) && !whisper.contains(p) && !me.contains(p)
+		&& !narrator.contains(p) && !gnarrator.contains(p)) {
 			ic.add(p);
+		}*/
+		
+	for(int i =0 ; i<chat.size(); i++)
+	{
+		if (chat.get(i).getList().contains(p)) {
+			if(chat.get(i).getType()=="msg")
+			message(chat.get(i).getRange(), p, s, chat.get(i).getPref());
+			if(chat.get(i).getType()=="me")
+		    me(chat.get(i).getRange(), p, s, chat.get(i).getPref());
+			if(chat.get(i).getType()=="nar")
+			narrator(chat.get(i).getRange(), p, s, chat.get(i).getPref());
 		}
-		if (ooc.contains(p)) {
-			message(ooc_range, p, s, ooc_str);
-		}
+	}
+		/*
 		if (ic.contains(p)) {
 			message(ic_range, p, s, ic_str);
 		}
@@ -178,8 +230,9 @@ public class RpChat implements CommandExecutor, Listener {
 		}
 		if (gnarrator.contains(p)) {
 			narrator(gnarrator_range, p, s, gnarrator_str);
-		}
+		}*/
 		event.setCancelled(true);
+		
 	}
 
 	public void message(int distance, Player p, String s, String chatType) {
