@@ -1,4 +1,4 @@
-package io.github.Tantol;
+package io.github.Tantol.RpCHat;
 
 import java.util.ArrayList;
 

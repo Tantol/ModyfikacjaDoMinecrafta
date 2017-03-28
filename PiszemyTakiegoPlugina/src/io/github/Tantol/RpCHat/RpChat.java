@@ -1,4 +1,4 @@
-package io.github.Tantol;
+package io.github.Tantol.RpCHat;
 
     import java.util.ArrayList;
 
@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import io.github.Tantol.Dungeon;
 
 public class RpChat implements CommandExecutor, Listener {
 	private static ArrayList<ChatOb> chat = new ArrayList<ChatOb>();
@@ -46,6 +48,7 @@ public class RpChat implements CommandExecutor, Listener {
 		 * Tego co pod tym lepiej nie tykaæ jak nie wiesz co i jak ^^
 		 */
 		flaga_c=1;
+		
 	}
 
 	

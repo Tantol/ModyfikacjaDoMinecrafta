@@ -8,23 +8,15 @@ commands:
   jebiecimatke:
     description: An example command
     usage: /jebiecimatke
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
   ooc:
     description: An example command
     usage: /ooc
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
   ic:
     description: An example command
     usage: /ic
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
   w:
     description: An example command
     usage: /w
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
   s:
     description: An example command
     usage: /s
@@ -33,23 +25,19 @@ commands:
   me:
     description: An example command
     usage: /me
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
   n:
     description: An example command
     usage: /n
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
+    permission: rpchat.narrator.normal
+    permission-message: Nie masz uprawnien aby pisac jako narrator.
   ng:
     description: An example command
     usage: /ng
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
+    permission: rpchat.narrator.global
+    permission-message: Nie masz uprawnien aby pisac jako narrator globalny.
   rpchat:
     description: An example command
     usage: /ng
-    permission: pluginmc.pluje
-    permission-message: You don't have the myplugin.mycommand permission.
 
 
 
