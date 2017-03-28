@@ -1,0 +1,57 @@
+ic:
+  range: 30
+  pref: '[IC]'
+  desc: Czat ogolny in character.
+  color: '&a'
+ooc:
+  range: 9999
+  pref: '[OOC]'
+  desc: Czat ogolny out of character.
+  color: '&c'
+w:
+  range: 5
+  pref: '[SZEPT]'
+  desc: Czat szeptu.
+  color: '&3'
+s:
+  range: 60
+  pref: '[KRZYK]'
+  desc: Czat krzyku.
+  color: '&e'
+me:
+  range: 30
+  pref: ''
+  desc: Czat aktywnosci.
+  color: '&e'
+n:
+  range: 300
+  pref: '[NARRATOR]'
+  desc: Czat narratora.
+  color: '&9'
+ng:
+  range: 9999
+  pref: '[NARRATOR GLOBALNY]'
+  desc: Czat narratora.
+  color: '&9'
+echo:
+  msg:
+    markcolor: '&c'
+    textcolor: '&f'
+    text: 'Nikt Cie nie slyszal'
+    showcounter: false
+    counternumbercolor: '&c'
+    counterbrackletcolor: '&c'
+  me:
+    markcolor: '&c'
+    textcolor: '&e'
+    text: 'Nikt nie widzial co robisz'
+    showcounter: false
+    counternumbercolor: '&c'
+    counterbrackletcolor: '&c'
+  narrator:
+    markcolor: '&c'
+    textcolor: '&f'
+    text: 'Nikt Cie nie slyszal'
+    showcounter: true
+    counternumbercolor: '&c'
+    counterbrackletcolor: '&c'

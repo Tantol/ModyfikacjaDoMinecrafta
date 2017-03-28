@@ -1,7 +1,5 @@
 package io.github.Tantol;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -29,6 +27,8 @@ public class Dungeon extends JavaPlugin {
 		getCommand("n").setExecutor(new RpChat());
 		getCommand("rpchat").setExecutor(new RpChat());
 		registerEvents(this, new RpChat());
+		generateConfig();
+	
 		//registerEvents(this, new ListenerClass());
 		//getCommand("hi").setExecutor(new Command()); template Command
 		//getCommand("testchat").setExecutor(new Both());
@@ -46,26 +46,15 @@ public class Dungeon extends JavaPlugin {
 			Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
 		}
 	}
-	private void createConfig() {
-	    try {
-	        if (!getDataFolder().exists()) {
-	            getDataFolder().mkdirs();
-	        }
-	        File file = new File(getDataFolder(), "config.yml");
-	        if (!file.exists()) {
-	            getLogger().info("Config.yml not found, creating!");
-	            saveDefaultConfig();
-	        } else {
-	            getLogger().info("Config.yml found, loading!");
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-
-	    }
-
-	}
 	 
 	public static Plugin getPlugin() {
 		return plugin;
 	}
+	
+	public void generateConfig(){
+		config.options().copyDefaults(true);
+		saveConfig();
+	}
+	
+	
 }
