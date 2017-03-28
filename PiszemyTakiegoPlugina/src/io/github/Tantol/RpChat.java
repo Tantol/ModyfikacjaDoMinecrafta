@@ -1,6 +1,7 @@
 package io.github.Tantol;
 
-import java.util.ArrayList;
+    import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
@@ -13,33 +14,41 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class RpChat implements CommandExecutor, Listener {
 	private static ArrayList<ChatOb> chat = new ArrayList<ChatOb>();
 	private static ArrayList<Player> rec = new ArrayList<Player>();
-	private String msg_echo;
-	private String narrator_echo;
-	private String me_echo;
-	/*
-	 * Tutaj Poin¿ej Edytowaæ
-	 */
+	private String msg_echo,narrator_echo,me_echo;
+	static int flaga_c=0;
+	
+
 
 	public RpChat() {
+		if(flaga_c==0){
+			
+			/*
+			 * Tutaj Poni¿ej Edytowaæ
+			 */
 		//Chaty, nie zapomnij dodaæ w mainie i w plugy.yml
-		chat.add(new ChatOb("ic", 30, ChatColor.GREEN + "[IC]", new ArrayList<Player>(), "msg"));
-		chat.add(new ChatOb("ooc", 4000, ChatColor.RED + "[OOC]", new ArrayList<Player>(), "msg"));
-		chat.add(new ChatOb("w", 5, ChatColor.GRAY + "[WHISPER]", new ArrayList<Player>(), "msg"));
-		chat.add(new ChatOb("s", 60, ChatColor.BLUE + "[SHOUT]", new ArrayList<Player>(), "msg"));
-		chat.add(new ChatOb("me", 30, ChatColor.YELLOW + "", new ArrayList<Player>(), "me"));
-		chat.add(new ChatOb("n", 300, ChatColor.AQUA + "[NARRATOR]", new ArrayList<Player>(), "nar"));
-		chat.add(new ChatOb("ng", 4000, ChatColor.AQUA + "[NARRATOR GLOBALNY]", new ArrayList<Player>(), "nar"));
+		
+		chat.add(new ChatOb("ic", 30, ChatColor.GREEN + "[IC]", new ArrayList<Player>(), "msg","Czat ogolny in character. Zasieg:[30]"));
+		chat.add(new ChatOb("ooc", 99999, ChatColor.RED + "[OOC]", new ArrayList<Player>(), "msg","Czat ogolny out of character. Zasieg:[Cala Mapa]"));
+		chat.add(new ChatOb("w", 5, ChatColor.GRAY + "[WHISPER]", new ArrayList<Player>(), "msg","Czat szeptu. Zasieg:[5]"));
+		chat.add(new ChatOb("s", 60, ChatColor.BLUE + "[SHOUT]", new ArrayList<Player>(), "msg","Czat krzyku. Zasieg:[60]"));
+		chat.add(new ChatOb("me", 30, ChatColor.YELLOW + "", new ArrayList<Player>(), "me","Czat aktywnosci. Zasieg[30]"));
+		chat.add(new ChatOb("n", 300, ChatColor.AQUA + "[NARRATOR]", new ArrayList<Player>(), "nar","Czat narratora. Zasieg[300], Wymagana permisja"));
+		chat.add(new ChatOb("ng", 99999, ChatColor.AQUA + "[NARRATOR GLOBALNY]", new ArrayList<Player>(), "nar","Czat narratora. Zasieg[Cala Mapa], Wymagana permisja"));
+		}
 		
 		//Wiadomosc, ktora otrzymamy gdy nikogo nie bedzie w zasiegu chatu
 		msg_echo = " " + ChatColor.RED + "[!] " + ChatColor.WHITE + "Nikt Cie nie slyszal" + ChatColor.RED + " [!]";
 		narrator_echo = " " + ChatColor.RED + "[!] " + ChatColor.WHITE + "Nikt Cie nie slyszal" + ChatColor.RED + " [!]";
 		me_echo = ChatColor.RED + "[!] " + ChatColor.YELLOW + "Nikt nie widzial co robisz" + ChatColor.RED + " [!]";
 		
+		
+		/*
+		 * Tego co pod tym lepiej nie tykaæ jak nie wiesz co i jak ^^
+		 */
+		flaga_c=1;
 	}
 
-	/*
-	 * Tego co pod tym lepiej nie tykaæ jak nie wiesz co i jak ^^
-	 */
+	
 	public boolean onCommand(CommandSender cs, org.bukkit.command.Command cmnd, String string, String[] strings) {
 		Player s = (Player) cs;
 		String msg = "";
@@ -66,6 +75,15 @@ public class RpChat implements CommandExecutor, Listener {
 				chat.get(i).getList().add(s);
 
 			}
+		}
+		if(cmnd.getName().equalsIgnoreCase("rpchat")){
+			String info = "";
+			
+			for (int i = 0; i < chat.size(); i++) {
+				info+="/"+chat.get(i).getCmd()+"     "+chat.get(i).getDesc()+"\n";	
+				
+				}
+			s.sendMessage(info);
 		}
 		flaga = 0;
 		return true;
@@ -168,7 +186,7 @@ public class RpChat implements CommandExecutor, Listener {
 
 				rec.get(i).sendMessage(chatType + ChatColor.WHITE + ": " + s);
 				if (flaga2 == 0) {
-					p.sendMessage(chatType + ChatColor.WHITE + ": " + s);
+					p.sendMessage(chatType + ChatColor.RED + "["+(rec.size()-1)+"]" + ChatColor.WHITE + ": " + s);
 					flaga2 = 1;
 				}
 				flaga = 1;

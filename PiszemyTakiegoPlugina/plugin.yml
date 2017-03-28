@@ -45,6 +45,11 @@ commands:
     usage: /ng
     permission: pluginmc.pluje
     permission-message: You don't have the myplugin.mycommand permission.
+  rpchat:
+    description: An example command
+    usage: /ng
+    permission: pluginmc.pluje
+    permission-message: You don't have the myplugin.mycommand permission.
 
 
 
