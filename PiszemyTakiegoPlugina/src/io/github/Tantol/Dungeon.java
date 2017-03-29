@@ -17,7 +17,7 @@ public class Dungeon extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
-		getCommand("jebiecimatke").setExecutor(new Test());
+		getCommand("dungeon").setExecutor(new DungeonCmd());
 		getCommand("ooc").setExecutor(new RpChat());
 		getCommand("ic").setExecutor(new RpChat());
 		getCommand("s").setExecutor(new RpChat());

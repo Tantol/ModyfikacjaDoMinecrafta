@@ -38,6 +38,9 @@ commands:
   rpchat:
     description: An example command
     usage: /ng
+  dungeon:
+    description: An example command
+    usage: /dungeon
 
 
 
