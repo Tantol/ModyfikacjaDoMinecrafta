@@ -141,8 +141,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 				if (items.get(i).getType().equals(armor.get(j))) {
 					for (int g = 0; g < armorParts.length; g++)
 						if (armorParts[g] != null && armorParts[g].getType() != Material.AIR) {
-							if (items.get(i).getItem().equals(onCurrsor)) {
-
+							if (items.get(i).getItem().equals(current)) {
+							//	if(armorParts[g].equals(obj))
 								player.sendMessage("Event On Slot.");
 								// player.setMaxHealth(player.getMaxHealth() -
 								// 10);

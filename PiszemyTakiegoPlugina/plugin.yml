@@ -3,7 +3,6 @@ name: PluginDungeon
 version: 1.0
 author: me
 description: An Example plugin
-depend: [Vault]
 commands:
   jebiecimatke:
     description: An example command
