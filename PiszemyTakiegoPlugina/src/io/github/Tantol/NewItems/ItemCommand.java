@@ -12,10 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.Tantol.ArmorAPI.ArmorType;
+import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
 
 public class ItemCommand implements CommandExecutor, Listener {
 
@@ -96,74 +95,65 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	}
 
+	@EventHandler
+	public void onWearArmor(ArmorEquipEvent event) {
+		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
+			event.getPlayer().sendMessage("Echo On");
+			for (int i = 0; i < items.size(); i++)
+				for (int j = 0; j < armor.size(); j++)
+					if (items.get(i).getType().equals(armor.get(j)))
+						if (items.get(i).getItem().equals(event.getNewArmorPiece())) {
+							event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
+							event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
+
+						}
+
+		}
+		if (event.getOldArmorPiece() != null && event.getOldArmorPiece().getType() != Material.AIR) {
+			event.getPlayer().sendMessage("Echo Off");
+			for (int i = 0; i < items.size(); i++)
+				for (int j = 0; j < armor.size(); j++)
+					if (items.get(i).getType().equals(armor.get(j)))
+						if (items.get(i).getItem().equals(event.getOldArmorPiece())) {
+							event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
+							event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
+						}
+		}
+	}
+
 	/*
-	 * @EventHandler public void onWearArmor(ArmorEquipEvent event) { if
-	 * (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType()
-	 * != Material.AIR) { event.getPlayer().sendMessage("Echo On"); for (int i =
-	 * 0; i < items.size(); i++) for(int j = 0; j < armor.size() ; j++) if
-	 * (items.get(i).getType().equals(armor.get(j))) if
-	 * (items.get(i).getItem().equals(event.getNewArmorPiece())){
-	 * event.getPlayer().sendMessage(event.getNewArmorPiece().toString() +
-	 * " On");
-	 * event.getPlayer().setHealth(event.getPlayer().getHealth()+items.get(i).
-	 * getHp());
+	 * @EventHandler public void onInventoryMove(InventoryClickEvent event) {
+	 * Player player = (Player) event.getWhoClicked(); ItemStack armorParts[] =
+	 * new ItemStack[4];
+	 * 
+	 * armorParts[0] = player.getInventory().getChestplate(); armorParts[1] =
+	 * player.getInventory().getHelmet(); armorParts[2] =
+	 * player.getInventory().getLeggings(); armorParts[3] =
+	 * player.getInventory().getBoots(); ItemStack current =
+	 * event.getCurrentItem(); ItemStack onCurrsor = event.getCursor();
+	 * ArmorType armorType = ArmorType .matchType(event.getCurrentItem() != null
+	 * && event.getCurrentItem().getType() != Material.AIR ?
+	 * event.getCurrentItem() : event.getCursor()); for (int i = 0; i <
+	 * items.size(); i++) for (int j = 0; j < armor.size(); j++) { if
+	 * (items.get(i).getType().equals(armor.get(j))) { for (int g = 0; g <
+	 * armorParts.length; g++) if (armorParts[g] != null &&
+	 * armorParts[g].getType() != Material.AIR) { if
+	 * (items.get(i).getItem().equals(current)) { //
+	 * if(armorParts[g].equals(obj)) player.sendMessage("Event On Slot."); //
+	 * player.setMaxHealth(player.getMaxHealth() - // 10); } } if
+	 * (items.get(i).getType().equals(armor.get(j))) { if (armorType != null &&
+	 * event.getRawSlot() == armorType.getSlot()) { if
+	 * (items.get(i).getItem().equals(onCurrsor)) {
+	 * 
+	 * player.sendMessage("Event On Currsor."); //
+	 * player.setMaxHealth(player.getMaxHealth() + // 10);
+	 * 
+	 * } } } }
 	 * 
 	 * }
 	 * 
-	 * } if (event.getOldArmorPiece() != null &&
-	 * event.getOldArmorPiece().getType() != Material.AIR) {
-	 * event.getPlayer().sendMessage("Echo Off"); for (int i = 0; i <
-	 * items.size(); i++) for(int j = 0; j < armor.size() ; j++) if
-	 * (items.get(i).getType().equals(armor.get(j))) if
-	 * (items.get(i).getItem().equals(event.getOldArmorPiece())){
-	 * event.getPlayer().sendMessage(event.getOldArmorPiece().toString() +
-	 * " Off");
-	 * event.getPlayer().setHealth(event.getPlayer().getHealth()-items.get(i).
-	 * getHp()); } } }
+	 * }
 	 */
-
-	@EventHandler
-	public void onInventoryMove(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		ItemStack armorParts[] = new ItemStack[4];
-
-		armorParts[0] = player.getInventory().getChestplate();
-		armorParts[1] = player.getInventory().getHelmet();
-		armorParts[2] = player.getInventory().getLeggings();
-		armorParts[3] = player.getInventory().getBoots();
-		ItemStack current = event.getCurrentItem();
-		ItemStack onCurrsor = event.getCursor();
-		ArmorType armorType = ArmorType
-				.matchType(event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR
-						? event.getCurrentItem() : event.getCursor());
-		for (int i = 0; i < items.size(); i++)
-			for (int j = 0; j < armor.size(); j++) {
-				if (items.get(i).getType().equals(armor.get(j))) {
-					for (int g = 0; g < armorParts.length; g++)
-						if (armorParts[g] != null && armorParts[g].getType() != Material.AIR) {
-							if (items.get(i).getItem().equals(current)) {
-							//	if(armorParts[g].equals(obj))
-								player.sendMessage("Event On Slot.");
-								// player.setMaxHealth(player.getMaxHealth() -
-								// 10);
-							}
-						}
-					if (items.get(i).getType().equals(armor.get(j))) {
-						if (armorType != null && event.getRawSlot() == armorType.getSlot()) {
-							if (items.get(i).getItem().equals(onCurrsor)) {
-
-								player.sendMessage("Event On Currsor.");
-								// player.setMaxHealth(player.getMaxHealth() +
-								// 10);
-
-							}
-						}
-					}
-				}
-
-			}
-
-	}
 
 	public static double round(double value, int places) {
 		if (places < 0)
