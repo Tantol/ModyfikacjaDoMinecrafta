@@ -31,11 +31,11 @@ public class ItemCommand implements CommandExecutor, Listener {
 				"WEAPON"));
 		items.add(new CreateItem(Material.DIAMOND_CHESTPLATE, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d,
 				"ARMOR", 5.0d));
-		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "HELMET",
+		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Helm", Arrays.asList("123", "321"), 5.0d, "HELMET",
 				5.0d));
-		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "LEGS",
+		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d, "LEGS",
 				5.0d));
-		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "BOOTS",
+		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
 				5.0d));
 	}
 
@@ -109,8 +109,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
-							event.getPlayer().sendMessage("Echo On");
 							if (!effects.get(j).contains(event.getPlayer())) {
+								event.getPlayer().sendMessage("Echo On");
 							//	event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								effects.get(j).add(event.getPlayer());
@@ -124,8 +124,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
-							event.getPlayer().sendMessage("Echo Off");
 							if (effects.get(j).contains(event.getPlayer())) {
+								event.getPlayer().sendMessage("Echo Off");
 							//	event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
 								effects.get(j).remove(event.getPlayer());
