@@ -17,6 +17,7 @@ import io.github.Tantol.RpCHat.RpChat;
 public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
 	FileConfiguration config = getConfig();
+	
 	public static File customYml = new File("mobConfig.yml");
 	public static FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
 	//private static Plugin plugin;
