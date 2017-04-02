@@ -1,4 +1,4 @@
-package NewItems;
+package io.github.Tantol.NewItems;
 
 import java.util.List;
 

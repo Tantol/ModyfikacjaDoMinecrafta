@@ -6,8 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import NewItems.CreateItem;
-import NewItems.ItemCommand;
+import io.github.Tantol.NewItems.ItemCommand;
 import io.github.Tantol.RpCHat.RpChat;
 
 
