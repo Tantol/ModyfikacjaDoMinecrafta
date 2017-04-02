@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.github.Tantol.ArmorAPI.ArmorListener;
 import io.github.Tantol.NewItems.ItemCommand;
 import io.github.Tantol.RpCHat.RpChat;
 
@@ -30,6 +31,7 @@ public class Dungeon extends JavaPlugin {
 		getCommand("newitem").setExecutor(new ItemCommand());
 		registerEvents(this, new RpChat());
 		registerEvents(this, new ItemCommand());
+		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
 	
 		//registerEvents(this, new ListenerClass());

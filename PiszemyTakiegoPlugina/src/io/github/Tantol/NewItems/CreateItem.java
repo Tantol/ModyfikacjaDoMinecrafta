@@ -13,6 +13,7 @@ public class CreateItem {
 	private double maxDmg;
 	private double def;
 	private String type;
+	private double hp;
 	public CreateItem(Material mat, String name, List<String> lore, double minDmg, double maxDmg,String type) {
 		this.minDmg = minDmg;
 		this.maxDmg = maxDmg;
@@ -20,9 +21,10 @@ public class CreateItem {
 		newItem = makeItem(new ItemStack(mat), name, lore);
 		
 	}
-	public CreateItem(Material mat, String name, List<String> lore, double def, String type) {
+	public CreateItem(Material mat, String name, List<String> lore, double def, String type, double hp) {
 		this.def = def;
 		this.type = type;
+		this.hp = hp;
 		newItem = makeItem(new ItemStack(mat), name, lore);
 
 	}
@@ -51,5 +53,8 @@ public class CreateItem {
 	}
 	public String getType(){
 		return type;
+	}
+	public double getHp(){
+		return hp;
 	}
 }
