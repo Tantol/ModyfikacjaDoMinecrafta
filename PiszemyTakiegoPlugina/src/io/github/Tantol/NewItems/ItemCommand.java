@@ -17,11 +17,16 @@ import org.bukkit.inventory.ItemStack;
 import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
 
 public class ItemCommand implements CommandExecutor, Listener {
+	public static ArrayList<ArrayList<Player>> effects = new ArrayList<ArrayList<Player>>();
 
 	ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
 
 	public ItemCommand() {
+		effects.add(new ArrayList<Player>());
+		effects.add(new ArrayList<Player>());
+		effects.add(new ArrayList<Player>());
+		effects.add(new ArrayList<Player>());
 		items.add(new CreateItem(Material.DIAMOND_SWORD, "Testowy Miecz", Arrays.asList("123", "321"), 1.0d, 30.0d,
 				"WEAPON"));
 		items.add(new CreateItem(Material.DIAMOND_CHESTPLATE, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d,
@@ -97,26 +102,34 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	@EventHandler
 	public void onWearArmor(ArmorEquipEvent event) {
+		
 		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
-			event.getPlayer().sendMessage("Echo On");
+			
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
-						if (items.get(i).getItem().equals(event.getNewArmorPiece())) {
-							event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
-							event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
-
+						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
+							event.getPlayer().sendMessage("Echo On");
+							if (!effects.get(j).contains(event.getPlayer())) {
+							//	event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
+								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
+								effects.get(j).add(event.getPlayer());
+							}
 						}
 
 		}
 		if (event.getOldArmorPiece() != null && event.getOldArmorPiece().getType() != Material.AIR) {
-			event.getPlayer().sendMessage("Echo Off");
+			
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
-						if (items.get(i).getItem().equals(event.getOldArmorPiece())) {
-							event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
-							event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
+						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
+							event.getPlayer().sendMessage("Echo Off");
+							if (effects.get(j).contains(event.getPlayer())) {
+							//	event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
+								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
+								effects.get(j).remove(event.getPlayer());
+							}
 						}
 		}
 	}

@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.Tantol.ArmorAPI.ArmorListener;
 import io.github.Tantol.NewItems.ItemCommand;
-import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
 
 public class Dungeon extends JavaPlugin {
@@ -35,7 +34,6 @@ public class Dungeon extends JavaPlugin {
 		getCommand("n").setExecutor(new RpChat());
 		getCommand("rpchat").setExecutor(new RpChat());
 		getCommand("newitem").setExecutor(new ItemCommand());
-		getCommand("newmob").setExecutor(new MobCommand());
 		registerEvents(this, new RpChat());
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
