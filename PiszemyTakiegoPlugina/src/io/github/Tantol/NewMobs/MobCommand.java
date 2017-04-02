@@ -26,12 +26,12 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 			Player player = (Player) sender;
 			Location loc = player.getLocation();
 			WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
-			
 			if (cmnd.getName().equalsIgnoreCase("newmob")) {
 				mobs.add(new CreateMob("Szymek", world, loc));
-				sender.sendMessage(Dungeon.customConfig.getString("ic.color"));
+				sender.sendMessage(Dungeon.customConfig.getString("path.to.string"));
+				sender.sendMessage("wooow");
 				
-				Dungeon.customConfig.set("path.to.boolean", true);
+				//Dungeon.customConfig.set("path.to.boolean", true);
 				return true;
 			}
 		} else {
