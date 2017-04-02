@@ -41,6 +41,9 @@ commands:
   dungeon:
     description: An example command
     usage: /dungeon
+  newitem:
+    description: test
+    usage: /newitem
 
 
 
