@@ -21,13 +21,18 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
-	ArrayList<ItemPlayer> armorCheck = new ArrayList<ItemPlayer>();
 
 	public ItemCommand() {
 		items.add(new CreateItem(Material.DIAMOND_SWORD, "Testowy Miecz", Arrays.asList("123", "321"), 1.0d, 30.0d,
 				"WEAPON"));
 		items.add(new CreateItem(Material.DIAMOND_CHESTPLATE, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d,
 				"ARMOR", 5.0d));
+		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "HELMET",
+				5.0d));
+		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "LEGS",
+				5.0d));
+		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "BOOTS",
+				5.0d));
 	}
 
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
@@ -40,6 +45,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 				int index = Integer.parseInt(args[0]);
 				sender.sendMessage("item crated");
 				player.getInventory().addItem(items.get(index).getItem());
+				player.setMaxHealth(20);
 			}
 
 		}
@@ -119,8 +125,12 @@ public class ItemCommand implements CommandExecutor, Listener {
 	@EventHandler
 	public void onInventoryMove(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		ItemPlayer ipl =  new ItemPlayer(player);
-		ItemStack itemArmor = player.getInventory().getChestplate();
+		ItemStack armorParts[] = new ItemStack[4];
+
+		armorParts[0] = player.getInventory().getChestplate();
+		armorParts[1] = player.getInventory().getHelmet();
+		armorParts[2] = player.getInventory().getLeggings();
+		armorParts[3] = player.getInventory().getBoots();
 		ItemStack current = event.getCurrentItem();
 		ItemStack onCurrsor = event.getCursor();
 		ArmorType armorType = ArmorType
@@ -129,26 +139,28 @@ public class ItemCommand implements CommandExecutor, Listener {
 		for (int i = 0; i < items.size(); i++)
 			for (int j = 0; j < armor.size(); j++) {
 				if (items.get(i).getType().equals(armor.get(j))) {
-					if (itemArmor != null && itemArmor.getType() != Material.AIR) {
-						if (items.get(i).getItem().equals(current)) {
-							if (!armorCheck.contains(ipl)) {
+					for (int g = 0; g < armorParts.length; g++)
+						if (armorParts[g] != null && armorParts[g].getType() != Material.AIR) {
+							if (items.get(i).getItem().equals(onCurrsor)) {
+
 								player.sendMessage("Event On Slot.");
-								player.setMaxHealth(player.getMaxHealth() - 10);
-								armorCheck.add(ipl);
+								// player.setMaxHealth(player.getMaxHealth() -
+								// 10);
 							}
 						}
-					}
-					if (armorType != null && event.getRawSlot() == armorType.getSlot()) {
+					if (items.get(i).getType().equals(armor.get(j))) {
+						if (armorType != null && event.getRawSlot() == armorType.getSlot()) {
+							if (items.get(i).getItem().equals(onCurrsor)) {
 
-						if (items.get(i).getItem().equals(onCurrsor)) {
-							if (armorCheck.contains(ipl)) {
 								player.sendMessage("Event On Currsor.");
-								player.setMaxHealth(player.getMaxHealth() + 10);
-								armorCheck.remove(ipl);
+								// player.setMaxHealth(player.getMaxHealth() +
+								// 10);
+
 							}
 						}
 					}
 				}
+
 			}
 
 	}
