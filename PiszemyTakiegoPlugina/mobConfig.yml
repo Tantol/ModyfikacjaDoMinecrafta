@@ -1,0 +1,5 @@
+ic:
+  range: 30
+  pref: '[IC]'
+  desc: Czat ogolny in character.
+  color: '&a'

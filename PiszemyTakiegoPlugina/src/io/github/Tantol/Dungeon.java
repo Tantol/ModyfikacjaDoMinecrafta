@@ -1,7 +1,11 @@
 package io.github.Tantol;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,11 +15,12 @@ import io.github.Tantol.NewItems.ItemCommand;
 import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
 
-
-
 public class Dungeon extends JavaPlugin {
-	FileConfiguration config = getConfig();
 	private static Plugin plugin;
+	FileConfiguration config = getConfig();
+	public static File customYml = new File("mobConfig.yml");
+	public static FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
+	//private static Plugin plugin;
 
 	@Override
 	public void onEnable() {
@@ -35,12 +40,14 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
-	
-		//registerEvents(this, new ListenerClass());
-		//getCommand("hi").setExecutor(new Command()); template Command
-		//getCommand("testchat").setExecutor(new Both());
-		//registerEvents(this, new Both());
-		//createConfig();
+		customConfig.set("path.to.boolean", true);
+		saveCustomYml(customConfig, customYml);
+		customConfig.set("path.to.boolean", true);
+		// registerEvents(this, new ListenerClass());
+		// getCommand("hi").setExecutor(new Command()); template Command
+		// getCommand("testchat").setExecutor(new Both());
+		// registerEvents(this, new Both());
+		// createConfig();
 	}
 
 	@Override
@@ -53,15 +60,24 @@ public class Dungeon extends JavaPlugin {
 			Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
 		}
 	}
-	 
+
 	public static Plugin getPlugin() {
 		return plugin;
 	}
-	
-	public void generateConfig(){
+
+	public void generateConfig() {
 		config.options().copyDefaults(true);
 		saveConfig();
 	}
-	
-	
+
+	public void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
+		try {
+			ymlConfig.options().copyDefaults(true);
+			saveConfig();
+			ymlConfig.save(ymlFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

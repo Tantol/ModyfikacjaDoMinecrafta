@@ -6,6 +6,7 @@
             <fileset dir="bin"></fileset>
             <fileset file="plugin.yml"></fileset>
             <fileset file="config.yml"></fileset>
+			<fileset file="mobConfig.yml"></fileset>
         </jar>
     </target>
 </project>
