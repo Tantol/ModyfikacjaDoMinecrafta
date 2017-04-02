@@ -38,7 +38,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
 				5.0d));
 	}
-
+//
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
 
 		Player player = (Player) sender;

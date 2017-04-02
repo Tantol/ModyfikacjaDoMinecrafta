@@ -19,7 +19,7 @@ public class CreateItem {
 		this.maxDmg = maxDmg;
 		this.type = type;
 		newItem = makeItem(new ItemStack(mat), name, lore);
-		
+		//
 	}
 	public CreateItem(Material mat, String name, List<String> lore, double def, String type, double hp) {
 		this.def = def;
