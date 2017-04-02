@@ -44,6 +44,9 @@ commands:
   newitem:
     description: test
     usage: /newitem
+  newmob:
+    description: Create mob
+    usage: /newmob
 
 
 
