@@ -104,8 +104,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().equals(event.getNewArmorPiece())) {
 							event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
-							event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
-
+						//	event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
+							System.out.println("Echo on");
 						}
 
 		}
@@ -116,7 +116,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().equals(event.getOldArmorPiece())) {
 							event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
-							event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
+						//	event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
+							System.out.println("Echo off");
 						}
 		}
 	}
