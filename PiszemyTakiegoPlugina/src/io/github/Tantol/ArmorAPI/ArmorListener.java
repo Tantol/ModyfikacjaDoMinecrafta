@@ -48,7 +48,7 @@ public class ArmorListener implements Listener{
 			numberkey = true;
 		}
 		if(e.getSlotType() != SlotType.ARMOR && e.getSlotType() != SlotType.QUICKBAR && e.getSlotType() != SlotType.CONTAINER) return;
-		if(e.getInventory() != null && !e.getInventory().getType().equals(InventoryType.PLAYER)) return;
+	//	if(e.getInventory() != null && !e.getInventory().getType().equals(InventoryType.PLAYER)) return;
 		if (!e.getInventory().getType().equals(InventoryType.CRAFTING) && !e.getInventory().getType().equals(InventoryType.PLAYER)) return;
 		if(!(e.getWhoClicked() instanceof Player)) return;
 		if(e.getCurrentItem() == null) return;
@@ -111,6 +111,7 @@ public class ArmorListener implements Listener{
 	public void playerInteractEvent(PlayerInteractEvent e){
 		if(e.getAction() == Action.PHYSICAL) return;
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
+
 			if(e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK){// Having both of these checks is useless, might as well do it though.
 				// Some blocks have actions when you right click them which stops the client from equipping the armor in hand.
 				Material mat = e.getClickedBlock().getType();
