@@ -10,6 +10,7 @@
 			<fileset file="config_chatRP.yml"></fileset>
 			<fileset file="config_newItems.yml"></fileset>
 			<fileset file="config_newMobs.yml"></fileset>
+			<fileset file="itemFlag.yml"></fileset>
         </jar>
     </target>
 </project>

@@ -15,15 +15,18 @@ public class Dungeon extends JavaPlugin {
 	public static ConfigManager chatRP;
 	public static ConfigManager newItems;
 	public static ConfigManager newMobs;
+	public static ConfigManager newItemsFlag;
 	
 	@Override
 	public void onEnable() {
 		plugin = this;
 		chatRP = new ConfigManager(this,"config_chatRP.yml");
 		newItems = new ConfigManager(this,"config_newItems.yml");
+		newItemsFlag = new ConfigManager(this,"itemFlag.yml");
 		newMobs = new ConfigManager(this,"config_newMobs.yml");
 		chatRP.saveDefaultCustomConfig();
 		newItems.saveDefaultCustomConfig();
+		newItemsFlag.saveDefaultCustomConfig();
 		newMobs.saveDefaultCustomConfig();
 		getCommand("dungeon").setExecutor(new DungeonCmd());
 		getCommand("ooc").setExecutor(new RpChat());

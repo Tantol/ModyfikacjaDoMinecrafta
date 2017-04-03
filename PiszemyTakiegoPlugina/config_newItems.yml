@@ -8,20 +8,14 @@
 
 
 ######## List Of Items
-## 
+##  Każdy nowy item musi się tu zanjdować
 item_list:
   - 'miecz1'
   - 'zbroja1'
-#  - 'zbroja2'
-#  - 'zbroja3'
-#  - 'zbroja4'
-######## Wiadomości zwrotne
-## markcolor = kolor wykrzykników
-## textcolor = kolor tekstu
-## text = treść wiadomości
-## showcounter = czy ma pokazywać ilu graczy widziało wiadomość
-## counternumbercolor = kolor numeru graczy
-## counterbrackletcolor = kolor nawiasów
+  - 'zbroja2'
+  - 'zbroja3'
+  - 'zbroja4'
+######## Właściwości dodanych itemów
 miecz1:
   type: 'WEAPON'
   name: 'Testowy Miecz'
@@ -37,7 +31,40 @@ zbroja1:
   name: 'Testowa Zbroja'
   material: 'DIAMOND_CHESTPLATE'
   movSpeed: 0
-  addHp: 0
+  addHp: 4
+  addDef: 0
+  desc:
+    - '1 linia'
+    - '2 linia'
+    - '3 linia'
+zbroja2:
+  type: 'HELMET'
+  name: 'Testowy Helm'
+  material: 'DIAMOND_HELMET'
+  movSpeed: 0
+  addHp: 4
+  addDef: 0
+  desc:
+    - '1 linia'
+    - '2 linia'
+    - '3 linia'
+zbroja3:
+  type: 'LEGS'
+  name: 'Testowe Spodnie'
+  material: 'DIAMOND_LEGGINGS'
+  movSpeed: 0
+  addHp: 4
+  addDef: 0
+  desc:
+    - '1 linia'
+    - '2 linia'
+    - '3 linia'
+zbroja4:
+  type: 'BOOTS'
+  name: 'Testowe Buty'
+  material: 'DIAMOND_BOOTS'
+  movSpeed: 0
+  addHp: 4
   addDef: 0
   desc:
     - '1 linia'

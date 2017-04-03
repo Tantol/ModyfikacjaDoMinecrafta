@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,13 +13,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
-
+	
 import io.github.Tantol.Dungeon;
 import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
+import io.github.Tantol.ArmorAPI.ArmorEquipEvent.EquipMethod;
+import io.github.Tantol.ArmorAPI.ArmorType;
 
 public class ItemCommand implements CommandExecutor, Listener {
-	public static ArrayList<ArrayList<Player>> effects = new ArrayList<ArrayList<Player>>();
+	public static ArrayList<ArrayList<String>> effects = new ArrayList<ArrayList<String>>();
 
 	static ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
@@ -26,14 +30,15 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	public ItemCommand() {
 		if (flaga_b == 0) {
-			effects.add(new ArrayList<Player>());
-			effects.add(new ArrayList<Player>());
-			effects.add(new ArrayList<Player>());
-			effects.add(new ArrayList<Player>());
+			effects.add(new ArrayList<String>());
+			effects.add(new ArrayList<String>());
+			effects.add(new ArrayList<String>());
+			effects.add(new ArrayList<String>());
 
 			for (int i = 0; i < Dungeon.newItems.getCustomConfig().getList("item_list").size(); i++) {
 				String path = Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString();
-				Material material = Material.getMaterial(Dungeon.newItems.getCustomConfig().getString(path + ".material"));
+				Material material = Material
+						.getMaterial(Dungeon.newItems.getCustomConfig().getString(path + ".material"));
 				String name = Dungeon.newItems.getCustomConfig().getString(path + ".name");
 				String type = Dungeon.newItems.getCustomConfig().getString(path + ".type");
 				ArrayList<String> list = (ArrayList<String>) Dungeon.newItems.getCustomConfig().getList(path + ".desc");
@@ -47,7 +52,16 @@ public class ItemCommand implements CommandExecutor, Listener {
 					items.add(new CreateItem(material, name, list, minDmg, maxDmg, type));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("ARMOR")) {
-					items.add(new CreateItem(material, name, list, def , type, hp,  movSpeed));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+				}
+				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("HELMET")) {
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+				}
+				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("LEGS")) {
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+				}
+				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("BOOTS")) {
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
 				}
 				flaga_b = 1;
 			}
@@ -78,7 +92,6 @@ public class ItemCommand implements CommandExecutor, Listener {
 				int index = Integer.parseInt(args[0]);
 				sender.sendMessage("item crated");
 				player.getInventory().addItem(items.get(index).getItem());
-				player.setMaxHealth(20);
 			}
 
 		}
@@ -112,20 +125,18 @@ public class ItemCommand implements CommandExecutor, Listener {
 			}
 
 		}
-		/*if (event.getEntity() instanceof Player) {
-			Player defender = (Player) event.getEntity();
-			ItemStack itemArmor = defender.getInventory().getChestplate();
-			for (int i = 0; i < items.size(); i++) {
-				if (items.get(i).getType().equals("ARMOR")) {
-					if (itemArmor.equals(items.get(i).getItem())) {
-						double dmgValue = event.getDamage();
-						System.out.println("[Dungeon] DEBUG: Old Dmg: " + event.getDamage());
-						event.setDamage((dmgValue - items.get(i).getDef()));
-						System.out.println("[Dungeon] DEBUG: New Dmg: " + (dmgValue - items.get(i).getDef()));
-					}
-				}
-			}
-		}*/
+		/*
+		 * if (event.getEntity() instanceof Player) { Player defender = (Player)
+		 * event.getEntity(); ItemStack itemArmor =
+		 * defender.getInventory().getChestplate(); for (int i = 0; i <
+		 * items.size(); i++) { if (items.get(i).getType().equals("ARMOR")) { if
+		 * (itemArmor.equals(items.get(i).getItem())) { double dmgValue =
+		 * event.getDamage(); System.out.println("[Dungeon] DEBUG: Old Dmg: " +
+		 * event.getDamage()); event.setDamage((dmgValue -
+		 * items.get(i).getDef()));
+		 * System.out.println("[Dungeon] DEBUG: New Dmg: " + (dmgValue -
+		 * items.get(i).getDef())); } } } }
+		 */
 
 	}
 
@@ -135,9 +146,10 @@ public class ItemCommand implements CommandExecutor, Listener {
 		if (event.getOldArmorPiece() != null && event.getOldArmorPiece().getType() != Material.AIR) {
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
-					if (items.get(i).getType().equals(armor.get(j))){
+					if (items.get(i).getType().equals(armor.get(j))) {
 						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
-							if (effects.get(j).contains(event.getPlayer())) {
+							if (effects.get(j).contains(event.getPlayer().getName())) {
+							//if (Dungeon.newItemsFlag.getCustomConfig().getList(j+".players").contains(event.getPlayer().getName())) {
 								event.getPlayer().sendMessage("Echo Off");
 								// event.getPlayer().sendMessage(event.getOldArmorPiece().toString()
 								// + " Off");
@@ -145,7 +157,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed());
-								effects.get(j).remove(event.getPlayer());
+								//effects.get(j).remove(event.getPlayer().getName());
+								//((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(j+".players")).remove(event.getPlayer().getName());
 							}
 						}
 					}
@@ -156,15 +169,24 @@ public class ItemCommand implements CommandExecutor, Listener {
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
-							if (!effects.get(j).contains(event.getPlayer())) {
+						//	if (!Dungeon.newItemsFlag.getCustomConfig().getList(j+".players").contains(event.getPlayer().getName())) {
+							if (!effects.get(j).contains(event.getPlayer().getName())) {
 								event.getPlayer().sendMessage("Echo On");
+								System.out.println((String) Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").get(0));
+								System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size());
+								for(int x = 0; x< Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size(); x++)
+								{
+									System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").get(x).toString());
+								}
 								// event.getPlayer().sendMessage(event.getNewArmorPiece().toString()
 								// + " On");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed());
-								effects.get(j).add(event.getPlayer());
+								//effects.get(j).add(event.getPlayer().getName());
+								((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players")).add(event.getPlayer().getName());
+								System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size());
 							}
 						}
 
@@ -172,6 +194,39 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	}
 
+	@EventHandler
+	public void playerDeathEvent(PlayerDeathEvent event) {
+
+		if (event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			for(int i = 0 ; i<4;i++){		
+				//effects.get(i).remove(player.getName());
+			//	((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(i+".players")).remove(player.getName());
+				player.setMaxHealth(20);	
+			}
+		}
+
+	}
+	/*
+	 * for (int i = 0; i < 4; i++) { if (!effects.contains(player))
+	 * effects.get(i).add(player);
+	 * 
+	 * } for (ItemStack i : player.getInventory().getArmorContents()) { if (i !=
+	 * null && !i.getType().equals(Material.AIR)) {
+	 * Bukkit.getServer().getPluginManager() .callEvent(new
+	 * ArmorEquipEvent(player, EquipMethod.DEATH, ArmorType.matchType(i), i,
+	 * null)); } }
+	 */
+
+	@EventHandler
+	/*
+	 * public void onPlayerJoin(PlayerJoinEvent e){ Player player =
+	 * e.getPlayer(); for(int i = 0 ; i<4; i++){ if(!items.contains(player))
+	 * effects.get(i).add(player); } }
+	 */
+
+	// e.getPlayer().sendMessage(ChatColor.DARK_BLUE+"Welcome to our server!");
+	// }
 	/*
 	 * @EventHandler public void onInventoryMove(InventoryClickEvent event) {
 	 * Player player = (Player) event.getWhoClicked(); ItemStack armorParts[] =
