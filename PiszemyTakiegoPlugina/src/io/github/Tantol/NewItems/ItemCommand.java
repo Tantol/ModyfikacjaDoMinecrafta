@@ -30,14 +30,11 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	public ItemCommand() {
 		if (flaga_b == 0) {
-			effects.add(new ArrayList<String>());
-			effects.add(new ArrayList<String>());
-			effects.add(new ArrayList<String>());
-			effects.add(new ArrayList<String>());getClass();
-			effects.get(0).add(" test");
-			effects.get(1).add(" test");
-			effects.get(2).add(" test");
-			effects.get(3).add(" test");
+			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("ARMOR.players"));
+			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("HELMET.players"));
+			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("LEGS.players"));
+			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("BOOTS.players"));
+			
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(0)+".players", effects.get(0));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(1)+".players", effects.get(1));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(2)+".players", effects.get(2));
@@ -215,8 +212,11 @@ public class ItemCommand implements CommandExecutor, Listener {
 		if (event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			for(int i = 0 ; i<4;i++){		
-				//effects.get(i).remove(player.getName());
-			//	((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(i+".players")).remove(player.getName());
+				effects.get(i).remove(player.getName());
+				Dungeon.newItemsFlag.getCustomConfig().set(armor.get(i)+".players", effects.get(i));
+				
+				Dungeon.newItemsFlag.saveDefaultCustomConfig();
+				Dungeon.newItemsFlag.saveCustomConfig();
 				player.setMaxHealth(20);	
 			}
 		}

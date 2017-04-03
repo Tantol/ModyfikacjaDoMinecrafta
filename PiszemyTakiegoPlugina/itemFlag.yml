@@ -1,22 +1,12 @@
-########################################################### 
-##########          Plugin Dungeon               ########## 
-##########          Config By DoneQ              ########## 
-###########################################################
-########################################################### 
-
-#####################   Chat Config    ####################
-
-
-######## Rodzaje Chatu
-## range = zasięg czatu
-## pref = prefix przed nickiem
-## desc = opis
-## color = kolor prefixu
 HELMET:
   players:
+  - ' test'
 ARMOR:
   players:
+  - ' test'
 LEGS:
   players:
+  - ' test'
 BOOTS:
   players:
+  - ' test'
