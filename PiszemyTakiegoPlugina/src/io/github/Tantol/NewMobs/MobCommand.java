@@ -8,19 +8,22 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.Listener;
 
-import io.github.Tantol.ConfigManager;
 import io.github.Tantol.Dungeon;
 import net.minecraft.server.v1_11_R1.CommandExecute;
+import net.minecraft.server.v1_11_R1.EntityCaveSpider;
 import net.minecraft.server.v1_11_R1.EntityChicken;
 import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityRabbit;
+import net.minecraft.server.v1_11_R1.EntityZombie;
+import net.minecraft.server.v1_11_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
 public class MobCommand extends CommandExecute implements CommandExecutor, Listener {
@@ -34,11 +37,11 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 			Location loc = player.getLocation();
 			WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
 			if (cmnd.getName().equalsIgnoreCase("newmob")) {
+				mobs.add(new CreateMob("Vindicator","Szymek", world, loc));
+				
 				mobs.add(new CreateMob("Zombie","Szymek", world, loc));
 				sender.sendMessage(Dungeon.newMobs.getCustomConfig().getString("przyklad.np1.mp3"));
 				sender.sendMessage("wooow");
-				EntityType s = EntityType.RABBIT;
-				player.getWorld().spawnEntity(loc, s);
 				return true;
 			}
 		} else {

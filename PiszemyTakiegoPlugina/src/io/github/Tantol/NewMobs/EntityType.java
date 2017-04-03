@@ -170,6 +170,8 @@ public enum EntityType {
      * An unknown entity without an Entity Class
      */
     UNKNOWN(null, null, -1, false);
+	
+	
 
     private String name;
     private Class<? extends Entity> clazz;
@@ -258,6 +260,9 @@ public enum EntityType {
      *
      * @return False if the entity type cannot be spawned
      */
+    /*Zombie z = (Zombie) player.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+	z.setCustomName("Your message goes here");
+	z.setCustomNameVisible(true);*/
     public boolean isSpawnable() {
         return independent;
     }
