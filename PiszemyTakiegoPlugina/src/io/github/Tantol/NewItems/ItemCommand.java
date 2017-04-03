@@ -33,12 +33,13 @@ public class ItemCommand implements CommandExecutor, Listener {
 				"ARMOR", 5.0d));
 		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Helm", Arrays.asList("123", "321"), 5.0d, "HELMET",
 				5.0d));
-		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d, "LEGS",
-				5.0d));
+		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d,
+				"LEGS", 5.0d));
 		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
 				5.0d));
 	}
-//
+
+	//
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
 
 		Player player = (Player) sender;
@@ -102,36 +103,39 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	@EventHandler
 	public void onWearArmor(ArmorEquipEvent event) {
-		
-		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
-			
-			for (int i = 0; i < items.size(); i++)
-				for (int j = 0; j < armor.size(); j++)
-					if (items.get(i).getType().equals(armor.get(j)))
-						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
-							if (!effects.get(j).contains(event.getPlayer())) {
-								event.getPlayer().sendMessage("Echo On");
-							//	event.getPlayer().sendMessage(event.getNewArmorPiece().toString() + " On");
-								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
-								effects.get(j).add(event.getPlayer());
-							}
-						}
 
-		}
 		if (event.getOldArmorPiece() != null && event.getOldArmorPiece().getType() != Material.AIR) {
-			
+
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
 							if (effects.get(j).contains(event.getPlayer())) {
 								event.getPlayer().sendMessage("Echo Off");
-							//	event.getPlayer().sendMessage(event.getOldArmorPiece().toString() + " Off");
+								// event.getPlayer().sendMessage(event.getOldArmorPiece().toString()
+								// + " Off");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
 								effects.get(j).remove(event.getPlayer());
 							}
 						}
 		}
+		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
+
+			for (int i = 0; i < items.size(); i++)
+				for (int j = 0; j < armor.size(); j++)
+					if (items.get(i).getType().equals(armor.get(j)))
+						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
+							if (!effects.get(j).contains(event.getPlayer())) {
+								event.getPlayer().sendMessage("Echo On");
+								// event.getPlayer().sendMessage(event.getNewArmorPiece().toString()
+								// + " On");
+								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
+								effects.get(j).add(event.getPlayer());
+							}
+						}
+
+		}
+	
 	}
 
 	/*
