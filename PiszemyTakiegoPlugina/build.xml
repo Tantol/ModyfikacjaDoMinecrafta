@@ -7,6 +7,9 @@
             <fileset file="plugin.yml"></fileset>
             <fileset file="config.yml"></fileset>
 			<fileset file="mobConfig.yml"></fileset>
+			<fileset file="config_chatRP.yml"></fileset>
+			<fileset file="config_newItems.yml"></fileset>
+			<fileset file="config_newMobs.yml"></fileset>
         </jar>
     </target>
 </project>

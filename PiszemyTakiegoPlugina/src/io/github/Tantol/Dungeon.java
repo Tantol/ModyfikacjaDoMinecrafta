@@ -1,15 +1,9 @@
 package io.github.Tantol;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
+import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,13 +16,17 @@ import io.github.Tantol.RpCHat.RpChat;
 public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
 	public FileConfiguration config = getConfig();
-	
-	File customYml = new File(getDataFolder()+"/mobConfig.yml");
-	FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
-
+	private static ArrayList<ConfigManager> tmp = new ArrayList<ConfigManager>();
+	public ConfigManager chatRP;
+	ConfigManager newItems;
+	ConfigManager newMobs;
 	@Override
 	public void onEnable() {
 		plugin = this;
+		confSave("config_chatRP.yml");
+		confSave("config_newItems.yml");
+		confSave("config_newMobs.yml");
+		//chatRP = new ConfigManager(this,"config_chatRP.yml");
 		getCommand("dungeon").setExecutor(new DungeonCmd());
 		getCommand("ooc").setExecutor(new RpChat());
 		getCommand("ic").setExecutor(new RpChat());
@@ -44,20 +42,13 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
-		//customConfig.set("path.to.boolean", true);
-		//customConfig.set("path.to.string", "This is a custom yml file :D");
-		saveCustomYml(customConfig, customYml);
-		//saveDefaultConfig();
-		// registerEvents(this, new ListenerClass());
-		// getCommand("hi").setExecutor(new Command()); template Command
-		// getCommand("testchat").setExecutor(new Both());
-		// registerEvents(this, new Both());
-		// createConfig();
+	
 	}
 
 	@Override
 	public void onDisable() {
 		plugin = this;
+
 	}
 
 	public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
@@ -74,15 +65,15 @@ public class Dungeon extends JavaPlugin {
 		config.options().copyDefaults(true);
 		saveConfig();
 	}
-
-	public void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
-		try {
-			//ymlConfig.options().copyDefaults(true);
-			//saveConfig();
-			ymlConfig.save(ymlFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}	
-
+	
+	public void confSave(String name){
+		tmp.add(new ConfigManager(this,name));
+		tmp.get(tmp.size()-1).saveDefaultCustomConfig();
+	}
+	public FileConfiguration getCustomConfig(int index) {
+        return tmp.get(index).getCustomConfig();
+    }
+	/*public FileConfiguration getCustomConfig(ConfigManager index) {
+        return index.getCustomConfig();
+	}*/
 }

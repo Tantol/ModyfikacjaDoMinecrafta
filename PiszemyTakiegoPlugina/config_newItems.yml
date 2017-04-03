@@ -1,0 +1,33 @@
+########################################################### 
+##########          Plugin Dungeon               ########## 
+##########          Config By DoneQ              ########## 
+###########################################################
+########################################################### 
+
+#####################   Items Config   ####################
+
+
+######## Pisz sobie co chesz 
+## bla bla
+## bla bla
+### bla bla
+## bla bla
+przyklad:
+  np1: 30
+  np2: '[IC]'
+  np3: Czat ogolny in character.
+  np4: '&a'
+
+######## Wiadomości zwrotne
+## markcolor = kolor wykrzykników
+## textcolor = kolor tekstu
+## text = treść wiadomości
+## showcounter = czy ma pokazywać ilu graczy widziało wiadomość
+## counternumbercolor = kolor numeru graczy
+## counterbrackletcolor = kolor nawiasów
+przyklad:
+  np1:
+    mp1: '&c'
+    mp2: '&f'
+    mp3: 'Nikt Cie nie slyszal'
+

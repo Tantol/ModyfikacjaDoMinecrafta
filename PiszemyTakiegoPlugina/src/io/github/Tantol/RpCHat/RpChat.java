@@ -18,12 +18,11 @@ public class RpChat implements CommandExecutor, Listener {
 	private static ArrayList<Player> rec = new ArrayList<Player>();
 	private String msg_echo,narrator_echo,me_echo;
 	static int flaga_c=0;
-	
+	Dungeon main;
 
 
 	public RpChat() {
 		if(flaga_c==0){
-			
 		chat.add(new ChatOb("ic", Dungeon.getPlugin().getConfig().getInt("ic.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("ic.color")) + Dungeon.getPlugin().getConfig().getString("ic.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("ic.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("ic.range")+"]"));
 		chat.add(new ChatOb("ooc", Dungeon.getPlugin().getConfig().getInt("ooc.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("ooc.color")) + Dungeon.getPlugin().getConfig().getString("ooc.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("ooc.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("ooc.range")+"]"));
 		chat.add(new ChatOb("w", Dungeon.getPlugin().getConfig().getInt("w.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("w.color")) + Dungeon.getPlugin().getConfig().getString("w.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("w.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("w.range")+"]"));
