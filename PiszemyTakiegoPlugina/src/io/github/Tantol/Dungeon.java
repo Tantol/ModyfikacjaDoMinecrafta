@@ -70,6 +70,7 @@ public class Dungeon extends JavaPlugin {
 		return plugin;
 	}
 
+	
 	public void generateConfig() {
 		config.options().copyDefaults(true);
 		saveConfig();
