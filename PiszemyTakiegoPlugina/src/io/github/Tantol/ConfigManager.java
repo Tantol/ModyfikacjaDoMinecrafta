@@ -40,7 +40,6 @@ public class ConfigManager {
         }
         customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
     
-        // Look for defaults in the jar
         Reader defConfigStream = null;
         try {
             defConfigStream = new InputStreamReader(plugin.getResource(fileName), "UTF8");
