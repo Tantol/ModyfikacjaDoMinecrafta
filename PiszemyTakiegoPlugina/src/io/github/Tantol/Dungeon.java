@@ -23,7 +23,7 @@ public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
 	public FileConfiguration config = getConfig();
 	
-	File customYml = new File(getDataFolder()+"mobConfig.yml");
+	File customYml = new File(getDataFolder()+"/mobConfig.yml");
 	FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
 
 	@Override
@@ -45,7 +45,7 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
 		//customConfig.set("path.to.boolean", true);
-		customConfig.set("path.to.string", "This is a custom yml file :D");
+		//customConfig.set("path.to.string", "This is a custom yml file :D");
 		saveCustomYml(customConfig, customYml);
 		//saveDefaultConfig();
 		// registerEvents(this, new ListenerClass());
@@ -70,7 +70,6 @@ public class Dungeon extends JavaPlugin {
 		return plugin;
 	}
 
-	
 	public void generateConfig() {
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -78,8 +77,8 @@ public class Dungeon extends JavaPlugin {
 
 	public void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
 		try {
-			ymlConfig.options().copyDefaults(true);
-			saveConfig();
+			//ymlConfig.options().copyDefaults(true);
+			//saveConfig();
 			ymlConfig.save(ymlFile);
 		} catch (IOException e) {
 			e.printStackTrace();
