@@ -23,18 +23,18 @@ public class RpChat implements CommandExecutor, Listener {
 
 	public RpChat() {
 		if(flaga_c==0){
-		chat.add(new ChatOb("ic", Dungeon.getPlugin().getConfig().getInt("ic.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("ic.color")) + Dungeon.getPlugin().getConfig().getString("ic.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("ic.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("ic.range")+"]"));
-		chat.add(new ChatOb("ooc", Dungeon.getPlugin().getConfig().getInt("ooc.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("ooc.color")) + Dungeon.getPlugin().getConfig().getString("ooc.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("ooc.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("ooc.range")+"]"));
-		chat.add(new ChatOb("w", Dungeon.getPlugin().getConfig().getInt("w.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("w.color")) + Dungeon.getPlugin().getConfig().getString("w.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("w.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("w.range")+"]"));
-		chat.add(new ChatOb("s", Dungeon.getPlugin().getConfig().getInt("s.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("s.color")) + Dungeon.getPlugin().getConfig().getString("s.pref"), new ArrayList<Player>(), "msg",Dungeon.getPlugin().getConfig().getString("s.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("s.range")+"]"));
-		chat.add(new ChatOb("me", Dungeon.getPlugin().getConfig().getInt("me.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("me.color")) + Dungeon.getPlugin().getConfig().getString("me.pref"), new ArrayList<Player>(), "me",Dungeon.getPlugin().getConfig().getString("me.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("me.range")+"]"));
-		chat.add(new ChatOb("n", Dungeon.getPlugin().getConfig().getInt("n.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("n.color")) + Dungeon.getPlugin().getConfig().getString("n.pref"), new ArrayList<Player>(), "nar",Dungeon.getPlugin().getConfig().getString("n.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("n.range")+"]"));
-		chat.add(new ChatOb("ng", Dungeon.getPlugin().getConfig().getInt("ng.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("ng.color")) + Dungeon.getPlugin().getConfig().getString("ng.pref"), new ArrayList<Player>(), "nar",Dungeon.getPlugin().getConfig().getString("ng.desc")+ " ["+Dungeon.getPlugin().getConfig().getInt("ng.range")+"]"));
+		chat.add(new ChatOb("ic", Dungeon.chatRP.getCustomConfig().getInt("ic.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("ic.color")) + Dungeon.chatRP.getCustomConfig().getString("ic.pref"), new ArrayList<Player>(), "msg",Dungeon.chatRP.getCustomConfig().getString("ic.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("ic.range")+"]"));
+		chat.add(new ChatOb("ooc", Dungeon.chatRP.getCustomConfig().getInt("ooc.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("ooc.color")) + Dungeon.chatRP.getCustomConfig().getString("ooc.pref"), new ArrayList<Player>(), "msg",Dungeon.chatRP.getCustomConfig().getString("ooc.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("ooc.range")+"]"));
+		chat.add(new ChatOb("w", Dungeon.chatRP.getCustomConfig().getInt("w.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("w.color")) + Dungeon.chatRP.getCustomConfig().getString("w.pref"), new ArrayList<Player>(), "msg",Dungeon.chatRP.getCustomConfig().getString("w.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("w.range")+"]"));
+		chat.add(new ChatOb("s", Dungeon.chatRP.getCustomConfig().getInt("s.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("s.color")) + Dungeon.chatRP.getCustomConfig().getString("s.pref"), new ArrayList<Player>(), "msg",Dungeon.chatRP.getCustomConfig().getString("s.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("s.range")+"]"));
+		chat.add(new ChatOb("me", Dungeon.chatRP.getCustomConfig().getInt("me.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("me.color")) + Dungeon.chatRP.getCustomConfig().getString("me.pref"), new ArrayList<Player>(), "me",Dungeon.chatRP.getCustomConfig().getString("me.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("me.range")+"]"));
+		chat.add(new ChatOb("n", Dungeon.chatRP.getCustomConfig().getInt("n.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("n.color")) + Dungeon.chatRP.getCustomConfig().getString("n.pref"), new ArrayList<Player>(), "nar",Dungeon.chatRP.getCustomConfig().getString("n.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("n.range")+"]"));
+		chat.add(new ChatOb("ng", Dungeon.chatRP.getCustomConfig().getInt("ng.range"), ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("ng.color")) + Dungeon.chatRP.getCustomConfig().getString("ng.pref"), new ArrayList<Player>(), "nar",Dungeon.chatRP.getCustomConfig().getString("ng.desc")+ " ["+Dungeon.chatRP.getCustomConfig().getInt("ng.range")+"]"));
 		}
 		
-		msg_echo = ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.textcolor")) + Dungeon.getPlugin().getConfig().getString("echo.msg.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.markcolor")) + " [!]";
-		narrator_echo =ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.textcolor")) + Dungeon.getPlugin().getConfig().getString("echo.narrator.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.markcolor")) + " [!]";
-		me_echo = ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.textcolor")) + Dungeon.getPlugin().getConfig().getString("echo.me.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.markcolor")) + " [!]";
+		msg_echo = ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.textcolor")) + Dungeon.chatRP.getCustomConfig().getString("echo.msg.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.markcolor")) + " [!]";
+		narrator_echo =ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.textcolor")) + Dungeon.chatRP.getCustomConfig().getString("echo.narrator.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.markcolor")) + " [!]";
+		me_echo = ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.markcolor")) + "[!] " + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.textcolor")) + Dungeon.chatRP.getCustomConfig().getString("echo.me.text") + ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.markcolor")) + " [!]";
 		
 		flaga_c=1;
 		
@@ -120,8 +120,8 @@ public class RpChat implements CommandExecutor, Listener {
 					&& rec.get(i).getLocation().distance(player_loc) > 0) {
 				rec.get(i).sendMessage(chatType + ChatColor.WHITE + p.getName() + ": " + s);
 				if (flaga2 == 0) {
-					if(Dungeon.getPlugin().getConfig().getBoolean("echo.msg.showcounter") == true)
-					p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.msg.counterbrackletcolor")) +"]"+chatType + ChatColor.WHITE + p.getName() + ": " + s);
+					if(Dungeon.chatRP.getCustomConfig().getBoolean("echo.msg.showcounter") == true)
+					p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.msg.counterbrackletcolor")) +"]"+chatType + ChatColor.WHITE + p.getName() + ": " + s);
 					else
 						p.sendMessage(chatType + ChatColor.WHITE + p.getName() + ": " + s);
 					flaga2 = 1;
@@ -152,8 +152,8 @@ public class RpChat implements CommandExecutor, Listener {
 
 				rec.get(i).sendMessage(chatType + p.getName() + " " + s);
 				if (flaga2 == 0) {
-					if(Dungeon.getPlugin().getConfig().getBoolean("echo.me.showcounter") == true)
-						p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.me.counterbrackletcolor")) +"]"+chatType + p.getName() + " " + s);	
+					if(Dungeon.chatRP.getCustomConfig().getBoolean("echo.me.showcounter") == true)
+						p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.me.counterbrackletcolor")) +"]"+chatType + p.getName() + " " + s);	
 					else
 						p.sendMessage(chatType + p.getName() + " " + s);
 					
@@ -185,8 +185,8 @@ public class RpChat implements CommandExecutor, Listener {
 
 				rec.get(i).sendMessage(chatType + ChatColor.WHITE + ": " + s);
 				if (flaga2 == 0) {
-					if(Dungeon.getPlugin().getConfig().getBoolean("echo.narrator.showcounter") == true)
-					p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.getPlugin().getConfig().getString("echo.narrator.counterbrackletcolor")) +"]" + chatType + ChatColor.WHITE + ": " + s);
+					if(Dungeon.chatRP.getCustomConfig().getBoolean("echo.narrator.showcounter") == true)
+					p.sendMessage(ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.counterbrackletcolor")) + "["+ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.counternumbercolor"))+(rec.size()-1)+ ChatColor.translateAlternateColorCodes ('&',Dungeon.chatRP.getCustomConfig().getString("echo.narrator.counterbrackletcolor")) +"]" + chatType + ChatColor.WHITE + ": " + s);
 					else
 						p.sendMessage(chatType + ": " + ChatColor.WHITE + s);	
 					flaga2 = 1;

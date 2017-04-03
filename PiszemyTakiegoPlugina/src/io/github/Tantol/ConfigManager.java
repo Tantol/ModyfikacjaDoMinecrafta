@@ -79,7 +79,6 @@ public class ConfigManager {
              this.plugin.saveResource(fileName, false);
          }
     }
-  // End Custom Config
    
 }
  

@@ -1,9 +1,6 @@
 package io.github.Tantol;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,17 +12,19 @@ import io.github.Tantol.RpCHat.RpChat;
 
 public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
-	public FileConfiguration config = getConfig();
-	private static ArrayList<ConfigManager> tmp = new ArrayList<ConfigManager>();
-	public ConfigManager chatRP;
-	ConfigManager newItems;
-	ConfigManager newMobs;
+	public static ConfigManager chatRP;
+	public static ConfigManager newItems;
+	public static ConfigManager newMobs;
+	
 	@Override
 	public void onEnable() {
 		plugin = this;
-		confSave("config_chatRP.yml");
-		confSave("config_newItems.yml");
-		confSave("config_newMobs.yml");
+		chatRP = new ConfigManager(this,"config_chatRP.yml");
+		newItems = new ConfigManager(this,"config_newItems.yml");
+		newMobs = new ConfigManager(this,"config_newMobs.yml");
+		chatRP.saveDefaultCustomConfig();
+		newItems.saveDefaultCustomConfig();
+		newMobs.saveDefaultCustomConfig();
 		getCommand("dungeon").setExecutor(new DungeonCmd());
 		getCommand("ooc").setExecutor(new RpChat());
 		getCommand("ic").setExecutor(new RpChat());
@@ -39,9 +38,7 @@ public class Dungeon extends JavaPlugin {
 		getCommand("newmob").setExecutor(new MobCommand());
 		registerEvents(this, new RpChat());
 		registerEvents(this, new ItemCommand());
-		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
-		generateConfig();
-		//chatRP = new ConfigManager(this,"config_chatRP.yml");
+		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));	
 	}
 
 	@Override
@@ -59,20 +56,4 @@ public class Dungeon extends JavaPlugin {
 	public static Plugin getPlugin() {
 		return plugin;
 	}
-
-	public void generateConfig() {
-		config.options().copyDefaults(true);
-		saveConfig();
-	}
-	
-	public void confSave(String name){
-		tmp.add(new ConfigManager(this,name));
-		tmp.get(tmp.size()-1).saveDefaultCustomConfig();
-	}
-	public FileConfiguration getCustomConfig(int index) {
-        return tmp.get(index).getCustomConfig();
-    }
-	/*public FileConfiguration getCustomConfig(ConfigManager index) {
-        return index.getCustomConfig();
-	}*/
 }
