@@ -33,8 +33,16 @@ public class ItemCommand implements CommandExecutor, Listener {
 			effects.add(new ArrayList<String>());
 			effects.add(new ArrayList<String>());
 			effects.add(new ArrayList<String>());
-			effects.add(new ArrayList<String>());
-
+			effects.add(new ArrayList<String>());getClass();
+			effects.get(0).add(" test");
+			effects.get(1).add(" test");
+			effects.get(2).add(" test");
+			effects.get(3).add(" test");
+			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(0)+".players", effects.get(0));
+			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(1)+".players", effects.get(1));
+			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(2)+".players", effects.get(2));
+			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(3)+".players", effects.get(3));
+            
 			for (int i = 0; i < Dungeon.newItems.getCustomConfig().getList("item_list").size(); i++) {
 				String path = Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString();
 				Material material = Material
@@ -148,17 +156,17 @@ public class ItemCommand implements CommandExecutor, Listener {
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j))) {
 						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
-							if (effects.get(j).contains(event.getPlayer().getName())) {
-							//if (Dungeon.newItemsFlag.getCustomConfig().getList(j+".players").contains(event.getPlayer().getName())) {
+							//if (effects.get(j).contains(event.getPlayer().getName())) {
+							if (Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").contains(event.getPlayer().getName())) {
 								event.getPlayer().sendMessage("Echo Off");
-								// event.getPlayer().sendMessage(event.getOldArmorPiece().toString()
-								// + " Off");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed());
-								//effects.get(j).remove(event.getPlayer().getName());
-								//((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(j+".players")).remove(event.getPlayer().getName());
+								effects.get(j).remove(event.getPlayer().getName());
+								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j)+".players", effects.get(j));
+								Dungeon.newItemsFlag.saveDefaultCustomConfig();
+								Dungeon.newItemsFlag.saveCustomConfig();
 							}
 						}
 					}
@@ -169,23 +177,30 @@ public class ItemCommand implements CommandExecutor, Listener {
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
 						if (items.get(i).getItem().getItemMeta().equals(event.getNewArmorPiece().getItemMeta())) {
-						//	if (!Dungeon.newItemsFlag.getCustomConfig().getList(j+".players").contains(event.getPlayer().getName())) {
-							if (!effects.get(j).contains(event.getPlayer().getName())) {
+							if (!Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").contains(event.getPlayer().getName())) {
+							//if (!effects.get(j).contains(event.getPlayer().getName())) {
 								event.getPlayer().sendMessage("Echo On");
 								System.out.println((String) Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").get(0));
 								System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size());
-								for(int x = 0; x< Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size(); x++)
-								{
-									System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").get(x).toString());
-								}
-								// event.getPlayer().sendMessage(event.getNewArmorPiece().toString()
-								// + " On");
+
+								
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed());
-								//effects.get(j).add(event.getPlayer().getName());
-								((ArrayList<String>)Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players")).add(event.getPlayer().getName());
+								
+								
+								effects.get(j).add(event.getPlayer().getName());
+								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j)+".players", effects.get(j));
+								
+								Dungeon.newItemsFlag.saveDefaultCustomConfig();
+								Dungeon.newItemsFlag.saveCustomConfig();
+								
+								
+								for(int x = 0; x< Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size(); x++)
+								{
+									System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").get(x).toString());
+								}
 								System.out.println(Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)+".players").size());
 							}
 						}
