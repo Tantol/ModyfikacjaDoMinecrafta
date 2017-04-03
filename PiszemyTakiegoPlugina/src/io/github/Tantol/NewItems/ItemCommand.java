@@ -30,13 +30,13 @@ public class ItemCommand implements CommandExecutor, Listener {
 		items.add(new CreateItem(Material.DIAMOND_SWORD, "Testowy Miecz", Arrays.asList("123", "321"), 1.0d, 30.0d,
 				"WEAPON"));
 		items.add(new CreateItem(Material.DIAMOND_CHESTPLATE, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d,
-				"ARMOR", 5.0d));
+				"ARMOR", 5.0d,0.0f));
 		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Helm", Arrays.asList("123", "321"), 5.0d, "HELMET",
-				5.0d));
+				5.0d,0.0f));
 		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d,
-				"LEGS", 5.0d));
+				"LEGS", 5.0d,0.0f));
 		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
-				5.0d));
+				5.0d,0.30f));
 	}
 
 	//
@@ -115,6 +115,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 								// event.getPlayer().sendMessage(event.getOldArmorPiece().toString()
 								// + " Off");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
+								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
+								event.getPlayer().setWalkSpeed(event.getPlayer().getWalkSpeed()- items.get(i).getSpeed());
 								effects.get(j).remove(event.getPlayer());
 							}
 						}
@@ -130,6 +132,8 @@ public class ItemCommand implements CommandExecutor, Listener {
 								// event.getPlayer().sendMessage(event.getNewArmorPiece().toString()
 								// + " On");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
+								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
+								event.getPlayer().setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed());
 								effects.get(j).add(event.getPlayer());
 							}
 						}
