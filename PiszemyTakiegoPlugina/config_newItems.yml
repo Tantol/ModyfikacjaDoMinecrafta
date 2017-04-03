@@ -7,17 +7,14 @@
 #####################   Items Config   ####################
 
 
-######## Pisz sobie co chesz 
-## bla bla
-## bla bla
-### bla bla
-## bla bla
-przyklad:
-  np1: 30
-  np2: '[IC]'
-  np3: Czat ogolny in character.
-  np4: '&a'
-
+######## List Of Items
+## 
+item_list:
+  - 'miecz1'
+  - 'zbroja1'
+#  - 'zbroja2'
+#  - 'zbroja3'
+#  - 'zbroja4'
 ######## Wiadomości zwrotne
 ## markcolor = kolor wykrzykników
 ## textcolor = kolor tekstu
@@ -25,9 +22,24 @@ przyklad:
 ## showcounter = czy ma pokazywać ilu graczy widziało wiadomość
 ## counternumbercolor = kolor numeru graczy
 ## counterbrackletcolor = kolor nawiasów
-przyklad:
-  np1:
-    mp1: '&c'
-    mp2: '&f'
-    mp3: 'Nikt Cie nie slyszal'
-
+miecz1:
+  type: 'WEAPON'
+  name: 'Testowy Miecz'
+  material: 'DIAMOND_SWORD'
+  minDmg: 1
+  maxDmg: 10
+  desc:
+    - '1 linia'
+    - '2 linia'
+    - '3 linia'
+zbroja1:
+  type: 'ARMOR'
+  name: 'Testowa Zbroja'
+  material: 'DIAMOND_CHESTPLATE'
+  movSpeed: 0
+  addHp: 0
+  addDef: 0
+  desc:
+    - '1 linia'
+    - '2 linia'
+    - '3 linia'

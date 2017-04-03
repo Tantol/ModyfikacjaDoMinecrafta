@@ -14,29 +14,57 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.Tantol.Dungeon;
 import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
 
 public class ItemCommand implements CommandExecutor, Listener {
 	public static ArrayList<ArrayList<Player>> effects = new ArrayList<ArrayList<Player>>();
 
-	ArrayList<CreateItem> items = new ArrayList<CreateItem>();
+	static ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
+	static int flaga_b = 0;
 
 	public ItemCommand() {
-		effects.add(new ArrayList<Player>());
-		effects.add(new ArrayList<Player>());
-		effects.add(new ArrayList<Player>());
-		effects.add(new ArrayList<Player>());
-		items.add(new CreateItem(Material.DIAMOND_SWORD, "Testowy Miecz", Arrays.asList("123", "321"), 1.0d, 30.0d,
-				"WEAPON"));
-		items.add(new CreateItem(Material.DIAMOND_CHESTPLATE, "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d,
-				"ARMOR", 5.0d,0.0f));
-		items.add(new CreateItem(Material.DIAMOND_HELMET, "Testowa Helm", Arrays.asList("123", "321"), 5.0d, "HELMET",
-				5.0d,0.0f));
-		items.add(new CreateItem(Material.DIAMOND_LEGGINGS, "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d,
-				"LEGS", 5.0d,0.0f));
-		items.add(new CreateItem(Material.DIAMOND_BOOTS, "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
-				5.0d,0.30f));
+		if (flaga_b == 0) {
+			effects.add(new ArrayList<Player>());
+			effects.add(new ArrayList<Player>());
+			effects.add(new ArrayList<Player>());
+			effects.add(new ArrayList<Player>());
+
+			for (int i = 0; i < Dungeon.newItems.getCustomConfig().getList("item_list").size(); i++) {
+				String path = Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString();
+				Material material = Material.getMaterial(Dungeon.newItems.getCustomConfig().getString(path + ".material"));
+				String name = Dungeon.newItems.getCustomConfig().getString(path + ".name");
+				String type = Dungeon.newItems.getCustomConfig().getString(path + ".type");
+				ArrayList<String> list = (ArrayList<String>) Dungeon.newItems.getCustomConfig().getList(path + ".desc");
+				double minDmg = Dungeon.newItems.getCustomConfig().getInt(path + ".minDmg");
+				double maxDmg = Dungeon.newItems.getCustomConfig().getInt(path + ".maxDmg");
+				double def = Dungeon.newItems.getCustomConfig().getInt(path + ".addDef");
+				double hp = Dungeon.newItems.getCustomConfig().getInt(path + ".addHp");
+				float movSpeed = Dungeon.newItems.getCustomConfig().getInt(path + ".movSpeed");
+
+				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("WEAPON")) {
+					items.add(new CreateItem(material, name, list, minDmg, maxDmg, type));
+				}
+				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("ARMOR")) {
+					items.add(new CreateItem(material, name, list, def , type, hp,  movSpeed));
+				}
+				flaga_b = 1;
+			}
+			/*
+			 * items.add(new CreateItem(Material.DIAMOND_SWORD, "Testowy Miecz",
+			 * Arrays.asList("123", "321"), 1.0d, 30.0d, "WEAPON"));
+			 * items.add(new CreateItem(Material.DIAMOND_CHESTPLATE,
+			 * "Testowa Zbroja", Arrays.asList("123", "321"), 5.0d, "ARMOR",
+			 * 5.0d,0.0f)); items.add(new CreateItem(Material.DIAMOND_HELMET,
+			 * "Testowa Helm", Arrays.asList("123", "321"), 5.0d, "HELMET",
+			 * 5.0d,0.0f)); items.add(new CreateItem(Material.DIAMOND_LEGGINGS,
+			 * "Testowe Spodnie", Arrays.asList("123", "321"), 5.0d, "LEGS",
+			 * 5.0d,0.0f)); items.add(new CreateItem(Material.DIAMOND_BOOTS,
+			 * "Testowe Buty", Arrays.asList("123", "321"), 5.0d, "BOOTS",
+			 * 5.0d,0.30f));
+			 */
+		}
 	}
 
 	//
@@ -84,7 +112,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 			}
 
 		}
-		if (event.getEntity() instanceof Player) {
+		/*if (event.getEntity() instanceof Player) {
 			Player defender = (Player) event.getEntity();
 			ItemStack itemArmor = defender.getInventory().getChestplate();
 			for (int i = 0; i < items.size(); i++) {
@@ -97,7 +125,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 					}
 				}
 			}
-		}
+		}*/
 
 	}
 
@@ -105,10 +133,9 @@ public class ItemCommand implements CommandExecutor, Listener {
 	public void onWearArmor(ArmorEquipEvent event) {
 
 		if (event.getOldArmorPiece() != null && event.getOldArmorPiece().getType() != Material.AIR) {
-
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
-					if (items.get(i).getType().equals(armor.get(j)))
+					if (items.get(i).getType().equals(armor.get(j))){
 						if (items.get(i).getItem().getItemMeta().equals(event.getOldArmorPiece().getItemMeta())) {
 							if (effects.get(j).contains(event.getPlayer())) {
 								event.getPlayer().sendMessage("Echo Off");
@@ -116,10 +143,12 @@ public class ItemCommand implements CommandExecutor, Listener {
 								// + " Off");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
-								event.getPlayer().setWalkSpeed(event.getPlayer().getWalkSpeed()- items.get(i).getSpeed());
+								event.getPlayer()
+										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed());
 								effects.get(j).remove(event.getPlayer());
 							}
 						}
+					}
 		}
 		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
 
@@ -133,13 +162,14 @@ public class ItemCommand implements CommandExecutor, Listener {
 								// + " On");
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
-								event.getPlayer().setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed());
+								event.getPlayer()
+										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed());
 								effects.get(j).add(event.getPlayer());
 							}
 						}
 
 		}
-	
+
 	}
 
 	/*

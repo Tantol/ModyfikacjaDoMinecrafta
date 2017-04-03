@@ -18,7 +18,6 @@ public class RpChat implements CommandExecutor, Listener {
 	private static ArrayList<Player> rec = new ArrayList<Player>();
 	private String msg_echo,narrator_echo,me_echo;
 	static int flaga_c=0;
-	Dungeon main;
 
 
 	public RpChat() {
