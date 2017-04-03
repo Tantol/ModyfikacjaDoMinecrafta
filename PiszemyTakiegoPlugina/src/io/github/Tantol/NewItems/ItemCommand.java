@@ -14,9 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import io.github.Tantol.Dungeon;
 import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
+import net.minecraft.server.v1_11_R1.Item;
 
 public class ItemCommand implements CommandExecutor, Listener {
 	public static ArrayList<ArrayList<String>> effects = new ArrayList<ArrayList<String>>();
@@ -24,7 +26,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 	static ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
 	static int flaga_b = 0;
-
+	int taskId;
 	public ItemCommand() {
 		if (flaga_b == 0) {
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("ARMOR.players"));
@@ -49,22 +51,23 @@ public class ItemCommand implements CommandExecutor, Listener {
 				double def = Dungeon.newItems.getCustomConfig().getInt(path + ".addDef");
 				double hp = Dungeon.newItems.getCustomConfig().getInt(path + ".addHp");
 				float movSpeed = Dungeon.newItems.getCustomConfig().getInt(path + ".movSpeed");
+				boolean antiFall = Dungeon.newItems.getCustomConfig().getBoolean(path + ".prevFalling");
 
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("WEAPON")) {
 					items.add(new CreateItem(material, name, list, minDmg, maxDmg, type));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("ARMOR")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("HELMET")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("LEGS")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("BOOTS")) {
 					System.out.println(movSpeed);
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
 				}
 				flaga_b = 1;
 			}
@@ -156,17 +159,18 @@ public class ItemCommand implements CommandExecutor, Listener {
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() - items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
 								event.getPlayer()
-										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed()/100);
+										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed() / 100);
+								stopIt();
 								effects.get(j).remove(event.getPlayer().getName());
 								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j) + ".players", effects.get(j));
 								Dungeon.newItemsFlag.saveDefaultCustomConfig();
 								Dungeon.newItemsFlag.saveCustomConfig();
+
 							}
 						}
 					}
 		}
 		if (event.getNewArmorPiece() != null && event.getNewArmorPiece().getType() != Material.AIR) {
-			System.out.println("Base speed " + event.getPlayer().getWalkSpeed());
 			for (int i = 0; i < items.size(); i++)
 				for (int j = 0; j < armor.size(); j++)
 					if (items.get(i).getType().equals(armor.get(j)))
@@ -174,13 +178,14 @@ public class ItemCommand implements CommandExecutor, Listener {
 							if (!Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j) + ".players")
 									.contains(event.getPlayer().getName())) {
 								event.getPlayer().sendMessage("Echo On");
-
+								System.out.println(event.getPlayer().getFallDistance());
+								if (items.get(i).getFall() == true)
+									antiFall(event.getPlayer(), j, i);
+								event.getPlayer().setFallDistance(0);
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
 								event.getPlayer()
-										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed()/100);
-								System.out.println("Item speed " + items.get(i).getSpeed());
-								System.out.println("End speed " + event.getPlayer().getWalkSpeed());
+										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed() / 100);
 
 								effects.get(j).add(event.getPlayer().getName());
 								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j) + ".players", effects.get(j));
@@ -191,6 +196,41 @@ public class ItemCommand implements CommandExecutor, Listener {
 						}
 
 		}
+
+	}
+
+	public void antiFall(Player player, int j, int i) {
+
+		BukkitScheduler scheduler = Dungeon.getPlugin().getServer().getScheduler();
+
+			taskId = scheduler.scheduleSyncRepeatingTask(Dungeon.getPlugin(), new Runnable() {
+			@Override
+
+			public void run() {
+
+				if (Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j) + ".players").contains(player.getName())
+						&& Dungeon.newItems.getCustomConfig()
+								.getBoolean(Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString()
+										+ ".prevFalling")) {
+					player.setFallDistance(0);
+					System.out.println("Im working");
+
+				} else {
+					System.out.println("Im in else");
+
+
+				}
+
+			}
+
+		}
+		
+		, 0L, 1L);
+		
+	}
+	
+	public void stopIt(){
+		Dungeon.getPlugin().getServer().getScheduler().cancelTask(taskId);
 
 	}
 

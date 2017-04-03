@@ -22,6 +22,7 @@ miecz1:
   material: 'DIAMOND_SWORD'
   minDmg: 1
   maxDmg: 10
+  prevFalling: false
   desc:
     - '1 linia'
     - '2 linia'
@@ -33,6 +34,7 @@ zbroja1:
   movSpeed: 0
   addHp: 4
   addDef: 0
+  prevFalling: false
   desc:
     - '1 linia'
     - '2 linia'
@@ -44,6 +46,7 @@ zbroja2:
   movSpeed: 0
   addHp: 4
   addDef: 0
+  prevFalling: false
   desc:
     - '1 linia'
     - '2 linia'
@@ -55,6 +58,7 @@ zbroja3:
   movSpeed: 0
   addHp: 4
   addDef: 0
+  prevFalling: false
   desc:
     - '1 linia'
     - '2 linia'
@@ -66,6 +70,7 @@ zbroja4:
   movSpeed: 0
   addHp: 4
   addDef: 0
+  prevFalling: false
   desc:
     - '1 linia'
     - '2 linia'

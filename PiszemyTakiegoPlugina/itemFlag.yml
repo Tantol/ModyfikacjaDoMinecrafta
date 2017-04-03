@@ -1,12 +1,12 @@
 HELMET:
   players:
- - 'test'
+    - 'test'
 ARMOR:
   players:
-  - ' test'
+     - ' test'
 LEGS:
   players:
-  - ' test'
+     - ' test'
 BOOTS:
   players:
-  - ' test'
+     - ' test'

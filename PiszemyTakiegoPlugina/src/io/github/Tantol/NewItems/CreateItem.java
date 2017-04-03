@@ -12,6 +12,7 @@ public class CreateItem {
 	private double minDmg;
 	private double maxDmg;
 	private double def;
+	private boolean antiFall;
 	private String type;
 	private double hp;
 	float speed;
@@ -22,12 +23,12 @@ public class CreateItem {
 		newItem = makeItem(new ItemStack(mat), name, lore);
 		//
 	}
-	public CreateItem(Material mat, String name, List<String> lore, double def, String type, double hp , float speed) {
+	public CreateItem(Material mat, String name, List<String> lore, double def, String type, double hp , float speed, boolean antiFall) {
 		this.def = def;
 		this.type = type;
 		this.hp = hp;
 		this.speed = speed;
-		
+		this.antiFall = antiFall;
 		newItem = makeItem(new ItemStack(mat), name, lore);
 
 	}
@@ -62,5 +63,8 @@ public class CreateItem {
 	}
 	public float getSpeed(){
 		return speed;
+	}
+	public boolean getFall(){
+		return antiFall;
 	}
 }
