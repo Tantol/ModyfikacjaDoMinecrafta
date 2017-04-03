@@ -18,7 +18,6 @@ import net.minecraft.server.v1_11_R1.WorldServer;
 public class MobCommand extends CommandExecute implements CommandExecutor, Listener {
 	private String ranga = "Player";
 	private ArrayList<CreateMob> mobs = new ArrayList<CreateMob>();
-
 	public MobCommand() {}
 
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
@@ -28,7 +27,7 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 			WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
 			if (cmnd.getName().equalsIgnoreCase("newmob")) {
 				mobs.add(new CreateMob("Szymek", world, loc));
-				sender.sendMessage(Dungeon.customConfig.getString("path.to.string"));
+				//sender.sendMessage(Dungeon.customConfig.getString("path.to.string"));
 				sender.sendMessage("wooow");
 				
 				//Dungeon.customConfig.set("path.to.boolean", true);

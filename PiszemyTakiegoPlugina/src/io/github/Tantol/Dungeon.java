@@ -23,10 +23,8 @@ public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
 	public FileConfiguration config = getConfig();
 	
-	public static FileConfiguration customConfig = null;
-	public File customConfigFile = null;
-	
-	//private static Plugin plugin;
+	File customYml = new File(getDataFolder()+"mobConfig.yml");
+	FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
 
 	@Override
 	public void onEnable() {
@@ -47,14 +45,9 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
 		//customConfig.set("path.to.boolean", true);
-		try {
-			getCustomConfig();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
 		customConfig.set("path.to.string", "This is a custom yml file :D");
-		saveCustomConfig();
-		saveDefaultConfig();
+		saveCustomYml(customConfig, customYml);
+		//saveDefaultConfig();
 		// registerEvents(this, new ListenerClass());
 		// getCommand("hi").setExecutor(new Command()); template Command
 		// getCommand("testchat").setExecutor(new Both());
@@ -90,49 +83,6 @@ public class Dungeon extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void reloadCustomConfig() throws UnsupportedEncodingException {
-	    if (customConfigFile == null) {
-	    customConfigFile = new File(getDataFolder(), "mobConfig.yml");
-	    }
-	    customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
-
-	    // Look for defaults in the jar
-	    Reader defConfigStream = new InputStreamReader(this.getResource("mobConfig.yml"));
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        customConfig.setDefaults(defConfig);
-	    }
-	}
-	public FileConfiguration getCustomConfig() throws UnsupportedEncodingException {
-	    if (customConfig == null) {
-	        reloadCustomConfig();
-	    }
-	    return customConfig;
-	}
-	
-	public void saveCustomConfig() {
-	    if (customConfig == null || customConfigFile == null) {
-	        return;
-	    }
-	    try {
-	        getCustomConfig().save(customConfigFile);
-	    } catch (IOException ex) {
-	        getLogger().log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
-	    }
-	}
-	
-	public void saveDefaultConfig() {
-	    if (customConfigFile == null) {
-	        customConfigFile = new File("mobConfig.yml");
-	    }
-	    if (!customConfigFile.exists()) {            
-	         plugin.saveResource("mobConfig.yml", false);
-	     }
-	}
-	
-		 
-		
+	}	
 
 }
