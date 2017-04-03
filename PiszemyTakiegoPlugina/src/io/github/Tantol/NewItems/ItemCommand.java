@@ -36,7 +36,7 @@ public class ItemCommand implements CommandExecutor, Listener {
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("HELMET.players"));
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("LEGS.players"));
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("BOOTS.players"));
-
+//
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(0) + ".players", effects.get(0));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(1) + ".players", effects.get(1));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(2) + ".players", effects.get(2));
