@@ -26,7 +26,9 @@ public class ItemCommand implements CommandExecutor, Listener {
 	static ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
 	static int flaga_b = 0;
+
 	int taskId;
+
 	public ItemCommand() {
 		if (flaga_b == 0) {
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("ARMOR.players"));
