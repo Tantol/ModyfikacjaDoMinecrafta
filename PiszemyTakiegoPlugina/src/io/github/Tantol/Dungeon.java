@@ -26,7 +26,6 @@ public class Dungeon extends JavaPlugin {
 		confSave("config_chatRP.yml");
 		confSave("config_newItems.yml");
 		confSave("config_newMobs.yml");
-		//chatRP = new ConfigManager(this,"config_chatRP.yml");
 		getCommand("dungeon").setExecutor(new DungeonCmd());
 		getCommand("ooc").setExecutor(new RpChat());
 		getCommand("ic").setExecutor(new RpChat());
@@ -42,7 +41,7 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));
 		generateConfig();
-	
+		//chatRP = new ConfigManager(this,"config_chatRP.yml");
 	}
 
 	@Override
