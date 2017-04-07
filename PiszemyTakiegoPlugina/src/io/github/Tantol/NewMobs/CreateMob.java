@@ -2,8 +2,62 @@ package io.github.Tantol.NewMobs;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_11_R1.*;
+import net.minecraft.server.v1_11_R1.EntityBat;
+import net.minecraft.server.v1_11_R1.EntityBlaze;
+import net.minecraft.server.v1_11_R1.EntityCaveSpider;
+import net.minecraft.server.v1_11_R1.EntityChicken;
+import net.minecraft.server.v1_11_R1.EntityCow;
+import net.minecraft.server.v1_11_R1.EntityCreature;
+import net.minecraft.server.v1_11_R1.EntityCreeper;
+import net.minecraft.server.v1_11_R1.EntityEnderDragon;
+import net.minecraft.server.v1_11_R1.EntityEnderman;
+import net.minecraft.server.v1_11_R1.EntityEndermite;
+import net.minecraft.server.v1_11_R1.EntityEvoker;
+import net.minecraft.server.v1_11_R1.EntityGhast;
+import net.minecraft.server.v1_11_R1.EntityGuardian;
+import net.minecraft.server.v1_11_R1.EntityGuardianElder;
+import net.minecraft.server.v1_11_R1.EntityHorse;
+import net.minecraft.server.v1_11_R1.EntityHorseDonkey;
+import net.minecraft.server.v1_11_R1.EntityHorseMule;
+import net.minecraft.server.v1_11_R1.EntityHorseSkeleton;
+import net.minecraft.server.v1_11_R1.EntityHorseZombie;
+import net.minecraft.server.v1_11_R1.EntityIronGolem;
+import net.minecraft.server.v1_11_R1.EntityLiving;
+import net.minecraft.server.v1_11_R1.EntityLlama;
+import net.minecraft.server.v1_11_R1.EntityMagmaCube;
+import net.minecraft.server.v1_11_R1.EntityMushroomCow;
+import net.minecraft.server.v1_11_R1.EntityOcelot;
+import net.minecraft.server.v1_11_R1.EntityPig;
+import net.minecraft.server.v1_11_R1.EntityPigZombie;
+import net.minecraft.server.v1_11_R1.EntityPolarBear;
+import net.minecraft.server.v1_11_R1.EntityRabbit;
+import net.minecraft.server.v1_11_R1.EntitySheep;
+import net.minecraft.server.v1_11_R1.EntityShulker;
+import net.minecraft.server.v1_11_R1.EntitySilverfish;
+import net.minecraft.server.v1_11_R1.EntitySkeleton;
+import net.minecraft.server.v1_11_R1.EntitySkeletonStray;
+import net.minecraft.server.v1_11_R1.EntitySkeletonWither;
+import net.minecraft.server.v1_11_R1.EntitySlime;
+import net.minecraft.server.v1_11_R1.EntitySnowman;
+import net.minecraft.server.v1_11_R1.EntitySpider;
+import net.minecraft.server.v1_11_R1.EntitySquid;
+import net.minecraft.server.v1_11_R1.EntityVex;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityVindicator;
+import net.minecraft.server.v1_11_R1.EntityWitch;
+import net.minecraft.server.v1_11_R1.EntityWither;
+import net.minecraft.server.v1_11_R1.EntityWolf;
+import net.minecraft.server.v1_11_R1.EntityZombie;
+import net.minecraft.server.v1_11_R1.EntityZombieHusk;
+import net.minecraft.server.v1_11_R1.EntityZombieVillager;
+import net.minecraft.server.v1_11_R1.EnumItemSlot;
+import net.minecraft.server.v1_11_R1.WorldServer;
+
 
 public class CreateMob extends EntityCreature {
 	String name, type;
@@ -11,7 +65,7 @@ public class CreateMob extends EntityCreature {
 	WorldServer world;
 	Location loc;
 
-	public CreateMob(String type, String name, WorldServer world, Location loc) {
+	public CreateMob(Player player, String type, String name, WorldServer world, Location loc) {
 		super(world);
 		this.type = type;
 		this.name = name;
@@ -200,6 +254,13 @@ public class CreateMob extends EntityCreature {
 		mob.setCustomNameVisible(true);
 		mob.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
 		world.addEntity(mob);
+		
+		/*EntityManager manager = RemoteEntities.createManager(this);
+        RemoteEntity entity = manager.createEntity(RemoteEntityType.Villager, location, false);
+        entity.setStationary(true);
+        entity.setPushable(false);
+        entity.getBukkitEntity().setCustomName("§d§lTutorial");
+        entity.getBukkitEntity().setCustomNameVisible(true);*/
 
 	}
 

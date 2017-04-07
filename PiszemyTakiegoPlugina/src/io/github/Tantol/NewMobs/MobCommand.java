@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.Listener;
 
 import io.github.Tantol.ConfigManager;
@@ -33,12 +34,22 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 			Player player = (Player) sender;
 			Location loc = player.getLocation();
 			WorldServer world = ((CraftWorld) player.getWorld()).getHandle();
+			WorldServer world2 = ((CraftWorld) loc.getWorld()).getHandle();
 			if (cmnd.getName().equalsIgnoreCase("newmob")) {
-				mobs.add(new CreateMob("Zombie","Szymek", world, loc));
+				/*mobs.add(new CreateMob(player,"Skeleton","Szymek", world, loc));
 				sender.sendMessage(Dungeon.newMobs.getCustomConfig().getString("przyklad.np1.mp3"));
 				sender.sendMessage("wooow");
 				EntityType s = EntityType.RABBIT;
-				player.getWorld().spawnEntity(loc, s);
+				player.getWorld().spawnEntity(loc, s);*/
+				CustomSkeleton skele = new CustomSkeleton(world);
+				//CustomSkeleton skele2 = new CustomSkeleton(world);
+				
+
+				//skele2.setPosition(loc.getX(), loc.getY(), loc.getZ());
+				skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+
+				world.addEntity(skele);
+				//world.addEntity(skele2);
 				return true;
 			}
 		} else {

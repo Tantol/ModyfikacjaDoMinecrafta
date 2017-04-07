@@ -7,6 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.Tantol.ArmorAPI.ArmorListener;
 import io.github.Tantol.NewItems.ItemCommand;
+import io.github.Tantol.NewMobs.CustomEntityRegistry;
+import io.github.Tantol.NewMobs.CustomEntityType;
+import io.github.Tantol.NewMobs.CustomSkeleton;
+import io.github.Tantol.NewMobs.EntityRegistry;
 import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
 
@@ -42,6 +46,11 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new RpChat());
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));	
+
+			  EntityRegistry.overrideEntity(CustomSkeleton.class);
+
+			   CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
+			   CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton.class);
 	}
 
 	@Override
