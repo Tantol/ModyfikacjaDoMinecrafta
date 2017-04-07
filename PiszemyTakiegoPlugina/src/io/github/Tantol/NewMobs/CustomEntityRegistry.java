@@ -74,7 +74,7 @@ public class CustomEntityRegistry extends RegistryMaterials {
 
         return (Class<? extends Entity>) wrapped.get(key);
     }
-
+    
     @Override
     public int a(Object key) { //TODO: Update name on version change (getId)
         if (this.customEntityIds.containsKey(key)) {
