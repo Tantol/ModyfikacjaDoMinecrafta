@@ -13,15 +13,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import io.github.Tantol.Dungeon;
 import io.github.Tantol.ArmorAPI.ArmorEquipEvent;
-import net.minecraft.server.v1_11_R1.Item;
 
 public class ItemCommand implements CommandExecutor, Listener {
 	public static ArrayList<ArrayList<String>> effects = new ArrayList<ArrayList<String>>();
+	public static ArrayList<String> potionEffect = new ArrayList<String>();
 
 	static ArrayList<CreateItem> items = new ArrayList<CreateItem>();
 	List<String> armor = Arrays.asList("ARMOR", "HELMET", "LEGS", "BOOTS");
@@ -29,18 +33,18 @@ public class ItemCommand implements CommandExecutor, Listener {
 	static int flaga_b = 0;
 	int taskId;
 
-
 	public ItemCommand() {
 		if (flaga_b == 0) {
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("ARMOR.players"));
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("HELMET.players"));
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("LEGS.players"));
 			effects.add((ArrayList<String>) Dungeon.newItemsFlag.getCustomConfig().getList("BOOTS.players"));
-
+			//
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(0) + ".players", effects.get(0));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(1) + ".players", effects.get(1));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(2) + ".players", effects.get(2));
 			Dungeon.newItemsFlag.getCustomConfig().set(armor.get(3) + ".players", effects.get(3));
+			Dungeon.newItemsFlag.getCustomConfig().set("Potion.potionEffects", potionEffect);
 
 			for (int i = 0; i < Dungeon.newItems.getCustomConfig().getList("item_list").size(); i++) {
 				String path = Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString();
@@ -49,28 +53,35 @@ public class ItemCommand implements CommandExecutor, Listener {
 				String name = Dungeon.newItems.getCustomConfig().getString(path + ".name");
 				String type = Dungeon.newItems.getCustomConfig().getString(path + ".type");
 				ArrayList<String> list = (ArrayList<String>) Dungeon.newItems.getCustomConfig().getList(path + ".desc");
-				double minDmg = Dungeon.newItems.getCustomConfig().getInt(path + ".minDmg");
-				double maxDmg = Dungeon.newItems.getCustomConfig().getInt(path + ".maxDmg");
-				double def = Dungeon.newItems.getCustomConfig().getInt(path + ".addDef");
-				double hp = Dungeon.newItems.getCustomConfig().getInt(path + ".addHp");
+				double minDmg = Dungeon.newItems.getCustomConfig().getDouble(path + ".minDmg");
+				double maxDmg = Dungeon.newItems.getCustomConfig().getDouble(path + ".maxDmg");
+				double def = Dungeon.newItems.getCustomConfig().getDouble(path + ".addDef");
+				double hp = Dungeon.newItems.getCustomConfig().getDouble(path + ".addHp");
 				float movSpeed = Dungeon.newItems.getCustomConfig().getInt(path + ".movSpeed");
 				boolean antiFall = Dungeon.newItems.getCustomConfig().getBoolean(path + ".prevFalling");
+				ArrayList<String> potionEff = (ArrayList<String>) Dungeon.newItems.getCustomConfig()
+						.getList(path + ".potionEff");
+				int potionEffGrade = Dungeon.newItems.getCustomConfig().getInt(path + ".potionEffGrade");
 
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("WEAPON")) {
 					items.add(new CreateItem(material, name, list, minDmg, maxDmg, type));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("ARMOR")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall, potionEff,
+							potionEffGrade));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("HELMET")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall, potionEff,
+							potionEffGrade));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("LEGS")) {
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall, potionEff,
+							potionEffGrade));
 				}
 				if (Dungeon.newItems.getCustomConfig().getString(path + ".type").equals("BOOTS")) {
 					System.out.println(movSpeed);
-					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall));
+					items.add(new CreateItem(material, name, list, def, type, hp, movSpeed, antiFall, potionEff,
+							potionEffGrade));
 				}
 				flaga_b = 1;
 			}
@@ -163,7 +174,9 @@ public class ItemCommand implements CommandExecutor, Listener {
 								event.getPlayer().setHealth(event.getPlayer().getHealth() - items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() - items.get(i).getSpeed() / 100);
-								stopIt();
+								fallStopIt(event.getPlayer(), j);
+
+								potionStopIt(event.getPlayer(), j);
 								effects.get(j).remove(event.getPlayer().getName());
 								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j) + ".players", effects.get(j));
 								Dungeon.newItemsFlag.saveDefaultCustomConfig();
@@ -183,12 +196,30 @@ public class ItemCommand implements CommandExecutor, Listener {
 								event.getPlayer().sendMessage("Echo On");
 								System.out.println(event.getPlayer().getFallDistance());
 								if (items.get(i).getFall() == true)
-									antiFall(event.getPlayer(), j, i);
+									antiFall(event.getPlayer(), j);
 								event.getPlayer().setFallDistance(0);
 								event.getPlayer().setMaxHealth(event.getPlayer().getMaxHealth() + items.get(i).getHp());
 								event.getPlayer().setHealth(event.getPlayer().getHealth() + items.get(i).getHp());
 								event.getPlayer()
 										.setWalkSpeed(event.getPlayer().getWalkSpeed() + items.get(i).getSpeed() / 100);
+								for (int g = 0; g < items.get(i).getPotion().size(); g++) {
+									System.out.println(items.get(i).getPotion().get(g));
+									PotionEffectType eff = null;
+
+									try {
+										eff = PotionEffectType.getByName(items.get(i).getPotion().get(g));
+									} catch (Exception ex) {
+										ex.printStackTrace();
+										break;
+									}
+									PotionEffect effect = new PotionEffect(eff, 40, items.get(i).getPotionGrade());
+
+									if (!potionEffect.contains(effect.toString())) {
+										potionEffect.add(effect.toString());
+									}
+									potionEffect(event.getPlayer(), effect, j);
+
+								}
 
 								effects.get(j).add(event.getPlayer().getName());
 								Dungeon.newItemsFlag.getCustomConfig().set(armor.get(j) + ".players", effects.get(j));
@@ -202,39 +233,152 @@ public class ItemCommand implements CommandExecutor, Listener {
 
 	}
 
-	public void antiFall(Player player, int j, int i) {
+	public void antiFall(Player player, int j) {
 
 		BukkitScheduler scheduler = Dungeon.getPlugin().getServer().getScheduler();
-
-			taskId = scheduler.scheduleSyncRepeatingTask(Dungeon.getPlugin(), new Runnable() {
+		taskId = scheduler.scheduleSyncRepeatingTask(Dungeon.getPlugin(), new Runnable() {
 			@Override
-
 			public void run() {
 
-				if (Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j) + ".players").contains(player.getName())
-						&& Dungeon.newItems.getCustomConfig()
-								.getBoolean(Dungeon.newItems.getCustomConfig().getList("item_list").get(i).toString()
-										+ ".prevFalling")) {
+				if (Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j) + ".players")
+						.contains(player.getName())) {
 					player.setFallDistance(0);
-					System.out.println("Im working");
+					System.out.println("Fall Work For " + player.getName());
 
 				} else {
 					System.out.println("Im in else");
-
 
 				}
 
 			}
 
 		}
-		
-		, 0L, 1L);
-		
-	}
-	
-	public void stopIt(){
-		Dungeon.getPlugin().getServer().getScheduler().cancelTask(taskId);
 
+				, 0L, 1L);
+		Dungeon.newItemsFlag.getCustomConfig().set("FALL." + player.getName() + ".nick", player.getDisplayName());
+		Dungeon.newItemsFlag.getCustomConfig().set("FALL." + player.getName() + ".id", taskId);
+		Dungeon.newItemsFlag.getCustomConfig().set("FALL." + player.getName() + "." + armor.get(j) + ".fallingOn",
+				true);
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
+	}
+
+	public void potionEffect(Player player, PotionEffect effect, int j) {
+
+		BukkitScheduler scheduler = Dungeon.getPlugin().getServer().getScheduler();
+
+		taskId = scheduler.scheduleSyncRepeatingTask(Dungeon.getPlugin(), new Runnable() {
+			@Override
+
+			public void run() {
+
+				// if
+				// (Dungeon.newItemsFlag.getCustomConfig().getList(armor.get(j)
+				// + ".players")
+				// .contains(player.getName())) {
+				player.addPotionEffect(effect);
+				System.out.println("Potion " + effect + " Works For " + player.getName());
+				// }
+			}
+
+		}
+
+				, 0L, 5L);
+		Dungeon.newItemsFlag.getCustomConfig()
+				.set("Potion." + player.getName() + "." + armor.get(j) + "." + effect + ".id", taskId);
+		Dungeon.newItemsFlag.getCustomConfig()
+				.set("Potion." + player.getName() + "." + armor.get(j) + "." + effect + ".potionOn", true);
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
+	}
+
+	@EventHandler
+	public void onPlayerJoinEvent(PlayerJoinEvent event) {
+		for (int i = 0; i < 4; i++) {
+			if (Dungeon.newItemsFlag.getCustomConfig()
+					.getBoolean("FALL." + event.getPlayer().getName() + "." + armor.get(i) + ".fallingOn") == true) {
+				antiFall(event.getPlayer(), i);
+			}
+
+		}
+
+		for (int i = 0; i < 4; i++)
+			for (int ef = 0; ef < potionEffect.size(); ef++)
+				for (int it = 0; it < items.size(); it++){
+					System.out.println("i= "+i+" ef = "+ef+" it= "+it);	
+					System.out.println(Dungeon.newItemsFlag.getCustomConfig().getString(("Potion." + event.getPlayer() + "."
+							+ armor.get(i) + "." + potionEffect.get(ef) + ".potionOn").toString()));
+					System.out.println(Dungeon.newItemsFlag.getCustomConfig().getBoolean("Potion." + event.getPlayer() + "."
+							+ armor.get(i) + "." + potionEffect.get(ef) + ".potionOn"));
+					if (Dungeon.newItemsFlag.getCustomConfig().getBoolean("Potion." + event.getPlayer() + "."
+							+ armor.get(i) + "." + potionEffect.get(ef) + ".potionOn")== true) {
+
+						PotionEffectType eff = null;
+
+						try {
+							eff = PotionEffectType.getByName(items.get(it).getPotion().get(ef));
+						} catch (Exception ex) {
+							ex.printStackTrace();
+							break;
+						}						
+						PotionEffect effect = new PotionEffect(eff, 40, 1);
+						System.out.println("it= "+it+" ef = "+ef+" eff= "+eff+" effect= "+effect);	
+						//potionEffect(event.getPlayer(), effect, i);
+
+					}
+				}
+
+	}
+
+	
+
+	@EventHandler
+	public void onPlayerQuitJEvent(PlayerQuitEvent event) {
+		for (int i = 0; i < 4; i++) {
+			fallStopItExit(event.getPlayer(), i);
+			potionStopItExit(event.getPlayer(), i);
+		}
+	}
+
+	public void fallStopIt(Player player, int j) {
+		Dungeon.getPlugin().getServer().getScheduler()
+				.cancelTask(Dungeon.newItemsFlag.getCustomConfig().getInt("FALL." + player.getName() + ".id"));
+		Dungeon.newItemsFlag.getCustomConfig().set("FALL." + player.getName() + "." + armor.get(j) + ".fallingOn",
+				false);
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
+	}
+
+	public void fallStopItExit(Player player, int j) {
+		Dungeon.getPlugin().getServer().getScheduler()
+				.cancelTask(Dungeon.newItemsFlag.getCustomConfig().getInt("FALL." + player.getName() + ".id"));
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
+	}
+
+	public void potionStopIt(Player player, int j) {
+		for (int i = 0; i < potionEffect.size(); i++) {
+			if (Dungeon.newItemsFlag.getCustomConfig().getBoolean("Potion." + player.getName() + "." + armor.get(j)
+					+ "." + potionEffect.get(i).toString() + ".potionOn") == true) {
+				Dungeon.getPlugin().getServer().getScheduler()
+						.cancelTask(Dungeon.newItemsFlag.getCustomConfig().getInt("Potion." + player.getName() + "."
+								+ armor.get(j) + "." + potionEffect.get(i).toString() + ".id", taskId));
+				Dungeon.newItemsFlag.getCustomConfig().set("Potion." + player.getName() + "." + armor.get(j) + "."
+						+ potionEffect.get(i).toString() + ".potionOn", false);
+			}
+		}
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
+	}
+
+	public void potionStopItExit(Player player, int j) {
+		for (int i = 0; i < potionEffect.size(); i++) {
+			Dungeon.getPlugin().getServer().getScheduler().cancelTask(Dungeon.newItemsFlag.getCustomConfig().getInt(
+					"Potion." + player.getName() + "." + armor.get(j) + "." + potionEffect.get(i).toString() + ".id",
+					taskId));
+		}
+		Dungeon.newItemsFlag.saveDefaultCustomConfig();
+		Dungeon.newItemsFlag.saveCustomConfig();
 	}
 
 	@EventHandler
@@ -250,7 +394,10 @@ public class ItemCommand implements CommandExecutor, Listener {
 				Dungeon.newItemsFlag.saveCustomConfig();
 				player.setMaxHealth(20);
 				player.setWalkSpeed(0.19999999f);
+				fallStopIt(player, i);
+				potionStopIt(player, i);
 			}
+
 		}
 
 	}
