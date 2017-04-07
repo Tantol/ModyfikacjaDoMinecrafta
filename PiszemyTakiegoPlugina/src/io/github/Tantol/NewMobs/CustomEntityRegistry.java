@@ -65,7 +65,7 @@ public class CustomEntityRegistry extends RegistryMaterials {
         this.customEntities.put(minecraftKey, entityClass);
         this.customEntityIds.put(entityClass, entityId);
     }
-
+    
     @Override
     public Class<? extends Entity> get(Object key) {
         if (this.customEntities.containsKey(key)) {
