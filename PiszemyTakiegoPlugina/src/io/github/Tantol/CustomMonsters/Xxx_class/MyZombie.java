@@ -11,7 +11,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
 import net.minecraft.server.v1_11_R1.EntityHuman;
-import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.EnumHand;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
 import net.minecraft.server.v1_11_R1.SoundEffect;
@@ -21,16 +21,18 @@ import net.minecraft.server.v1_11_R1.World;
 
 
 
-public class MyVillager extends EntityVillager {
+public class MyZombie extends EntityZombie {
 
 	
-	public MyVillager(World world) {
+	public MyZombie(World world) {
 		super(world);
-		ItemStack cp = new ItemStack(Material.CACTUS);
+		ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
 		net.minecraft.server.v1_11_R1.ItemStack nms = CraftItemStack.asNMSCopy(cp);
 		this.setEquipment(EnumItemSlot.MAINHAND,nms);
 		this.setCustomName("Janusz");
 		this.setCustomNameVisible(true);
+		this.setSlot(EnumItemSlot.CHEST,nms);
+		this.setSprinting(true);
 		
 	}
 
@@ -45,13 +47,13 @@ public class MyVillager extends EntityVillager {
 	
 	public void collide(Entity entity) {}
 	
-	public static MyVillager spawn(Location location) {
+	public static MyZombie spawn(Location location) {
 		try {
 			if (!location.getChunk().isLoaded()) location.getChunk().load();
-			MyVillager villager = new MyVillager(((CraftWorld) location.getWorld()).getHandle());
-			villager.setPosition(location.getX(), location.getY(), location.getZ());
-			(((CraftWorld) location.getWorld()).getHandle()).addEntity(villager, SpawnReason.CUSTOM);
-			return villager;
+			MyZombie zombie = new MyZombie(((CraftWorld) location.getWorld()).getHandle());
+			zombie .setPosition(location.getX(), location.getY(), location.getZ());
+			(((CraftWorld) location.getWorld()).getHandle()).addEntity(zombie , SpawnReason.CUSTOM);
+			return zombie ;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

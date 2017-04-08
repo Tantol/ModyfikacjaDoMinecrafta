@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import io.github.Tantol.ConfigManager;
 import io.github.Tantol.Dungeon;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
+import io.github.Tantol.CustomMonsters.Xxx_class.MyZombie;
 import net.minecraft.server.v1_11_R1.CommandExecute;
 import net.minecraft.server.v1_11_R1.EntityChicken;
 import net.minecraft.server.v1_11_R1.EntityLiving;
@@ -50,7 +51,8 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 				//skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
 				//world.addEntity(skele);
 				//world.addEntity(skele2);
-				MyVillager.spawn(loc);
+				//MyVillager.spawn(loc);
+				MyZombie.spawn(loc);
 				return true;
 			}
 		} else {

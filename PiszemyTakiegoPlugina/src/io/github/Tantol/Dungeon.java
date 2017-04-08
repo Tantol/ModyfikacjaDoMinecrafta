@@ -14,9 +14,11 @@ import io.github.Tantol.NewItems.ItemCommand;
 import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
 import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
 import io.github.Tantol.CustomMonsters.EntityAppearence;
 import io.github.Tantol.CustomMonsters.EntityRegistrer;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
+import io.github.Tantol.CustomMonsters.Xxx_class.MyZombie;
 
 public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
@@ -69,7 +71,8 @@ public class Dungeon extends JavaPlugin {
 		log = getLogger();
 		registerEntities();
 		EntityRegistrer.register("MyCustomVillager", EntityAppearence.VILLAGER, EntityType.VILLAGER, EntityVillager.class, MyVillager.class);
-			//EntityRegistry.overrideEntity(CustomSkeleton.class);
+		EntityRegistrer.register("MyCustomZombie", EntityAppearence.ZOMBIE, EntityType.ZOMBIE, EntityZombie.class, MyZombie.class);
+		//EntityRegistry.overrideEntity(CustomSkeleton.class);
 			//Ustawia na jajku i komendzie, (po reloadzie tylko jajko) 
 			
 			 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
