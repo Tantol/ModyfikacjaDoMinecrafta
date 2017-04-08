@@ -52,7 +52,8 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 				//world.addEntity(skele);
 				//world.addEntity(skele2);
 				//MyVillager.spawn(loc);
-				MyZombie.spawn(loc);
+				//MyZombie.spawn(loc);
+				mobs.add(new CreateMob(player,"Zombie","Szymek", world, loc));
 				return true;
 			}
 		} else {

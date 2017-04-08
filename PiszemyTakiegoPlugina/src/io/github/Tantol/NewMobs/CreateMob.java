@@ -1,12 +1,20 @@
 package io.github.Tantol.NewMobs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+
+import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityBat;
 import net.minecraft.server.v1_11_R1.EntityBlaze;
 import net.minecraft.server.v1_11_R1.EntityCaveSpider;
@@ -56,6 +64,7 @@ import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.EntityZombieHusk;
 import net.minecraft.server.v1_11_R1.EntityZombieVillager;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
+import net.minecraft.server.v1_11_R1.MinecraftKey;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
 
@@ -64,6 +73,10 @@ public class CreateMob extends EntityCreature {
 	EntityLiving mob = null;
 	WorldServer world;
 	Location loc;
+	
+	private final BiMap<MinecraftKey, EntityLiving> customEntities = HashBiMap.create();
+    private final BiMap<EntityLiving, MinecraftKey> customEntityClasses = this.customEntities.inverse();
+    private final Map<EntityLiving, Integer> customEntityIds = new HashMap<>();
 
 	public CreateMob(Player player, String type, String name, WorldServer world, Location loc) {
 		super(world);
@@ -153,6 +166,10 @@ public class CreateMob extends EntityCreature {
 			addAtributes();
 		} else if (type.equals("Zombie")) {
 			mob = new EntityZombie(world);
+			ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
+			net.minecraft.server.v1_11_R1.ItemStack nms = CraftItemStack.asNMSCopy(cp);
+			mob.setSlot(EnumItemSlot.CHEST,nms);
+			mob.setSprinting(true);
 			addAtributes();
 		} else if (type.equals("Zombie Villager")) {
 			mob = new EntityZombieVillager(world);
@@ -247,20 +264,17 @@ public class CreateMob extends EntityCreature {
 			addAtributes();
 		}
 		///////////////////////////////////////////
-		// Other mobs ///////////////////////////
+		// Construct mob ///////////////////////////
 		///////////////////////////////////////////
 
 		mob.setCustomName(ChatColor.RED + name);
 		mob.setCustomNameVisible(true);
-		mob.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+		
+		MinecraftKey minecraftKey = new MinecraftKey(type+name);
+        this.customEntities.put(minecraftKey, mob);
+        this.customEntityIds.put(mob, mob.getId());
 		world.addEntity(mob);
 		
-		/*EntityManager manager = RemoteEntities.createManager(this);
-        RemoteEntity entity = manager.createEntity(RemoteEntityType.Villager, location, false);
-        entity.setStationary(true);
-        entity.setPushable(false);
-        entity.getBukkitEntity().setCustomName("§d§lTutorial");
-        entity.getBukkitEntity().setCustomNameVisible(true);*/
 
 	}
 
