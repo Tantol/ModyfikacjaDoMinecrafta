@@ -1,18 +1,22 @@
 package io.github.Tantol;
 
+import java.io.File;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.Tantol.ArmorAPI.ArmorListener;
 import io.github.Tantol.NewItems.ItemCommand;
-import io.github.Tantol.NewMobs.CustomEntityRegistry;
-import io.github.Tantol.NewMobs.CustomEntityType;
-import io.github.Tantol.NewMobs.CustomSkeleton;
-import io.github.Tantol.NewMobs.EntityRegistry;
 import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import io.github.Tantol.CustomMonsters.EntityAppearence;
+import io.github.Tantol.CustomMonsters.EntityRegistrer;
+import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
 
 public class Dungeon extends JavaPlugin {
 	private static Plugin plugin;
@@ -20,6 +24,19 @@ public class Dungeon extends JavaPlugin {
 	public static ConfigManager newItems;
 	public static ConfigManager newMobs;
 	public static ConfigManager newItemsFlag;
+	public static boolean enabled = false;
+	public static File saveDirectory;
+	public static String nmsver;
+	public static Logger log;
+	
+	@Override
+	public void onLoad() {
+		nmsver = Bukkit.getServer().getClass().getPackage().getName();
+		nmsver = nmsver.substring(nmsver.lastIndexOf(".") + 1);
+		saveDirectory = new File(this.getDataFolder(), "entityNBT");
+		saveDirectory.mkdirs();
+	}
+	
 	
 	@Override
 	public void onEnable() {
@@ -46,16 +63,29 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new RpChat());
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));	
-
-			  EntityRegistry.overrideEntity(CustomSkeleton.class);
-
-			   CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
-			   CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton.class);
+		
+		
+		enabled = true;
+		log = getLogger();
+		registerEntities();
+		EntityRegistrer.register("MyCustomVillager", EntityAppearence.VILLAGER, EntityType.VILLAGER, EntityVillager.class, MyVillager.class);
+			//EntityRegistry.overrideEntity(CustomSkeleton.class);
+			//Ustawia na jajku i komendzie, (po reloadzie tylko jajko) 
+			
+			 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
+			 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton2.class);
+			 //2---->Ustawia na jajku i komende
+		
+			   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton.class);
+			   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton2.class);
+			   //1--->Ustawia na jajku i komendzie
 	}
 
 	@Override
 	public void onDisable() {
 		plugin = this;
+		unregisterEntities();
+		enabled = false;
 
 	}
 
@@ -68,4 +98,16 @@ public class Dungeon extends JavaPlugin {
 	public static Plugin getPlugin() {
 		return plugin;
 	}
+	
+	private void registerEntities() {
+			getServer().getPluginManager().registerEvents(new io.github.Tantol.CustomMonsters.v1_11_R1.Listeners(), this);
+			io.github.Tantol.CustomMonsters.v1_11_R1.CustomRegistry.registerEntities();
+		
+	}
+	
+	private void unregisterEntities() {
+		io.github.Tantol.CustomMonsters.v1_11_R1.CustomRegistry.unregisterEntities();
+		
+	}
+	
 }

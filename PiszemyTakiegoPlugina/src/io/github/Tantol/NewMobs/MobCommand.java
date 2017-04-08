@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
@@ -18,10 +19,12 @@ import org.bukkit.event.Listener;
 
 import io.github.Tantol.ConfigManager;
 import io.github.Tantol.Dungeon;
+import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
 import net.minecraft.server.v1_11_R1.CommandExecute;
 import net.minecraft.server.v1_11_R1.EntityChicken;
 import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityRabbit;
+import net.minecraft.server.v1_11_R1.EntitySkeleton;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
 public class MobCommand extends CommandExecute implements CommandExecutor, Listener {
@@ -41,15 +44,13 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 				sender.sendMessage("wooow");
 				EntityType s = EntityType.RABBIT;
 				player.getWorld().spawnEntity(loc, s);*/
-				CustomSkeleton skele = new CustomSkeleton(world);
+				//CustomSkeleton skele = new CustomSkeleton(world);
 				//CustomSkeleton skele2 = new CustomSkeleton(world);
-				
-
-				//skele2.setPosition(loc.getX(), loc.getY(), loc.getZ());
-				skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-
-				world.addEntity(skele);
+				//skele.setPosition(loc.getX(), loc.getY(), loc.getZ());
+				//skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+				//world.addEntity(skele);
 				//world.addEntity(skele2);
+				MyVillager.spawn(loc);
 				return true;
 			}
 		} else {
