@@ -1,4 +1,4 @@
-package io.github.Tantol.NewMobs;
+package io.github.Tantol.CustomMonsters;
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityTypes;
 import net.minecraft.server.v1_11_R1.MinecraftKey;
@@ -25,7 +25,7 @@ public class EntityRegistry {
 
             search = (Class<? extends Entity>) search.getSuperclass();
         } while(true);
-
+       
         throw new IllegalArgumentException("Unable to find entity superclass to override for class " + customEntityClass);
     }
 

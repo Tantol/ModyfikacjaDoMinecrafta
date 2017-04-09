@@ -15,7 +15,6 @@ import io.github.Tantol.NewMobs.MobCommand;
 import io.github.Tantol.RpCHat.RpChat;
 import net.minecraft.server.v1_11_R1.EntityVillager;
 import net.minecraft.server.v1_11_R1.EntityZombie;
-import io.github.Tantol.CustomMonsters.EntityAppearence;
 import io.github.Tantol.CustomMonsters.EntityRegistrer;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyZombie;
@@ -26,18 +25,18 @@ public class Dungeon extends JavaPlugin {
 	public static ConfigManager newItems;
 	public static ConfigManager newMobs;
 	public static ConfigManager newItemsFlag;
-	public static boolean enabled = false;
+	/*public static boolean enabled = false;
 	public static File saveDirectory;
 	public static String nmsver;
-	public static Logger log;
+	public static Logger log;*/
 	
-	@Override
+	/*@Override
 	public void onLoad() {
 		nmsver = Bukkit.getServer().getClass().getPackage().getName();
 		nmsver = nmsver.substring(nmsver.lastIndexOf(".") + 1);
 		saveDirectory = new File(this.getDataFolder(), "entityNBT");
 		saveDirectory.mkdirs();
-	}
+	}*/
 	
 	
 	@Override
@@ -66,29 +65,27 @@ public class Dungeon extends JavaPlugin {
 		registerEvents(this, new ItemCommand());
 		registerEvents(this, new ArmorListener(getConfig().getStringList("blocked")));	
 		
+		//enabled = true;
+		//log = getLogger();
+		//EntityRegistrer.addAllCustomEntity();
+		//registerEntities();
 		
-		enabled = true;
-		log = getLogger();
-		registerEntities();
-		EntityRegistrer.register("MyCustomVillager", EntityAppearence.VILLAGER, EntityType.VILLAGER, EntityVillager.class, MyVillager.class);
-		EntityRegistrer.register("MyCustomZombie", EntityAppearence.ZOMBIE, EntityType.ZOMBIE, EntityZombie.class, MyZombie.class);
-		//EntityRegistry.overrideEntity(CustomSkeleton.class);
-			//Ustawia na jajku i komendzie, (po reloadzie tylko jajko) 
-			
-			 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
-			 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton2.class);
-			 //2---->Ustawia na jajku i komende
-		
-			   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton.class);
-			   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton2.class);
-			   //1--->Ustawia na jajku i komendzie
+		//Jebac to .... ponizej
+		//EntityRegistry.overrideEntity(CustomSkeleton2.class);
+		//Ustawia na jajku i komendzie, (po reloadzie tylko jajko) 
+		 //CustomEntityRegistry.registerCustomEntity(51, "skeleton", CustomSkeleton.class);
+		 //CustomEntityRegistry.registerCustomEntity(51, "skeleton2", CustomSkeleton2.class);
+		 //2---->Ustawia na jajku i komende
+		   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton.class);
+		   //CustomEntityRegistry.addCustomEntity(51, "skeleton", CustomSkeleton2.class);
+		   //1--->Ustawia na jajku i komendzie
 	}
 
 	@Override
 	public void onDisable() {
 		plugin = this;
-		unregisterEntities();
-		enabled = false;
+		//enabled = false;
+		//unregisterEntities();
 
 	}
 

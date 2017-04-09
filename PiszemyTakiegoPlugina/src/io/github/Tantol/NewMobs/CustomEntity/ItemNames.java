@@ -1,4 +1,4 @@
-package io.github.Tantol.CustomMonsters;
+package io.github.Tantol.NewMobs.CustomEntity;
 
 import java.util.HashMap;
 import java.util.Map;

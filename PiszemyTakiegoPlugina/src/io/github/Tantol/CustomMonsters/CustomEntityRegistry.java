@@ -1,4 +1,4 @@
-package io.github.Tantol.NewMobs;
+package io.github.Tantol.CustomMonsters;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import java.lang.reflect.Field;

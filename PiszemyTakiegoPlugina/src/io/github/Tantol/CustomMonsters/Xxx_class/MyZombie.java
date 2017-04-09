@@ -29,7 +29,7 @@ public class MyZombie extends EntityZombie {
 		ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
 		net.minecraft.server.v1_11_R1.ItemStack nms = CraftItemStack.asNMSCopy(cp);
 		this.setEquipment(EnumItemSlot.MAINHAND,nms);
-		this.setCustomName("Janusz");
+		this.setCustomName("Spaghetti");
 		this.setCustomNameVisible(true);
 		this.setSlot(EnumItemSlot.CHEST,nms);
 		this.setSprinting(true);

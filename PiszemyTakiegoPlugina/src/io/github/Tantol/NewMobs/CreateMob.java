@@ -1,19 +1,25 @@
 package io.github.Tantol.NewMobs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import io.github.Tantol.NewMobs.CustomEntity.CustomSkeleton;
+import io.github.Tantol.NewMobs.CustomEntity.EntityAppearence;
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityBat;
 import net.minecraft.server.v1_11_R1.EntityBlaze;
@@ -54,6 +60,7 @@ import net.minecraft.server.v1_11_R1.EntitySlime;
 import net.minecraft.server.v1_11_R1.EntitySnowman;
 import net.minecraft.server.v1_11_R1.EntitySpider;
 import net.minecraft.server.v1_11_R1.EntitySquid;
+import net.minecraft.server.v1_11_R1.EntityTypes;
 import net.minecraft.server.v1_11_R1.EntityVex;
 import net.minecraft.server.v1_11_R1.EntityVillager;
 import net.minecraft.server.v1_11_R1.EntityVindicator;
@@ -65,220 +72,254 @@ import net.minecraft.server.v1_11_R1.EntityZombieHusk;
 import net.minecraft.server.v1_11_R1.EntityZombieVillager;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
 import net.minecraft.server.v1_11_R1.MinecraftKey;
+import net.minecraft.server.v1_11_R1.World;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
-
 public class CreateMob extends EntityCreature {
-	String name, type;
-	EntityLiving mob = null;
-	WorldServer world;
-	Location loc;
-	
-	private final BiMap<MinecraftKey, EntityLiving> customEntities = HashBiMap.create();
-    private final BiMap<EntityLiving, MinecraftKey> customEntityClasses = this.customEntities.inverse();
-    private final Map<EntityLiving, Integer> customEntityIds = new HashMap<>();
+	static String name;
+	static String type;
+	static EntityLiving oldMobClass = null;
+	static EntityLiving newMobClass = null;
+	static WorldServer world;
+	static Location loc;
+	static ItemStack cp;
+	static net.minecraft.server.v1_11_R1.ItemStack item =null;
+	static boolean visable=false;
 
-	public CreateMob(Player player, String type, String name, WorldServer world, Location loc) {
+	//private final BiMap<MinecraftKey, EntityLiving> customEntities = HashBiMap.create();
+	//private final BiMap<EntityLiving, MinecraftKey> customEntityClasses = this.customEntities.inverse();
+	private final static Map<Integer,Class<? extends Entity>> onEggAndSummonWithOldMobClass= new HashMap<>();
+	private final static List<Integer> onEggAndSummon = new ArrayList<Integer> ();
+	private final static List<String> worldAddEntity = new ArrayList<String>();
+	private final String types[] = { "Cave Spider", "Enderman", "Polar Bear", "Spider", "Zombie Pigman", "Blaze",
+			"Creeper", "Elder Guardian", "Endermite", "Evoker", "Ghast", "Guardian", "Zombie Husk", "Magma Cube",
+			"Shulker", "Silverfish", "Skeleton", "Slime", "Skeleton Stray", "Vex", "Vindicator", "Witch",
+			"Skeleton Wither", "Zombie", "Zombie Villager", "Horse Donkey", "Horse", "Llama", "Mule", "Ocelot", "Wolf",
+			"Iron Golem", "Snowman", "Ender Dragon", "Wither", "Horse Zombie", "Bat", "Chicken", "Cow", "Mooshroom Cow",
+			"Pig", "Rabbit", "Sheep", "Horse Skeleton", "Squid", "Villager" };
+	private final int typesId[]={59,58,102,52,57,61 };
+	//blaze 61
+	//private final BiMap<String, Class<? extends Entity>> nowa = HashBiMap.create();
+
+	public CreateMob(CommandSender sender, String type, String name, boolean visable, WorldServer world, Location loc) {
 		super(world);
-		this.type = type;
-		this.name = name;
-		this.world = world;
-		this.loc = loc;
+		CreateMob.type = type;
+		CreateMob.name = name;
+		CreateMob.world = world;
+		CreateMob.loc = loc;
+		ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
+		CreateMob.item= CraftItemStack.asNMSCopy(cp);
+		CreateMob.visable=visable;
 
 		///////////////////////////////////////////
 		// Neutral mobs ///////////////////////////
 		///////////////////////////////////////////
 		if (type.equals("Cave Spider")) {
-			mob = new EntityCaveSpider(world);
-			addAtributes();
+			oldMobClass = new EntityCaveSpider(world);
 		} else if (type.equals("Enderman")) {
-			mob = new EntityEnderman(world);
-			addAtributes();
+			oldMobClass = new EntityEnderman(world);
 		} else if (type.equals("Polar Bear")) {
-			mob = new EntityPolarBear(world);
-			addAtributes();
+			oldMobClass = new EntityPolarBear(world);
 		} else if (type.equals("Spider")) {
-			mob = new EntitySpider(world);
-			addAtributes();
-		} else if (type.equals("Zombie Pigman")) {
-			mob = new EntityPigZombie(world);
-			addAtributes();
+			oldMobClass = new EntitySpider(world);
+		} else if (type.equals("Pig Zombie")) {
+			oldMobClass = new EntityPigZombie(world);
 		}
 		///////////////////////////////////////////
-		// Hostile mobs ///////////////////////////
+		// Hostile oldMobClasss ///////////////////////////
 		// Need Chicken Jockey;
 		// Need Skeleton Horseman;
 		// Need Spider Jockey;
 		///////////////////////////////////////////
 		else if (type.equals("Blaze")) {
-			mob = new EntityBlaze(world);
-			addAtributes();
+			oldMobClass = new EntityBlaze(world);
 		} else if (type.equals("Creeper")) {
-			mob = new EntityCreeper(world);
-			addAtributes();
-		} else if (type.equals("Elder Guardian")) {
-			mob = new EntityGuardianElder(world);
-			addAtributes();
+			oldMobClass = new EntityCreeper(world);
+		} else if (type.equals("Guardian Elder")) {
+			oldMobClass = new EntityGuardianElder(world);
 		} else if (type.equals("Endermite")) {
-			mob = new EntityEndermite(world);
-			addAtributes();
+			oldMobClass = new EntityEndermite(world);
 		} else if (type.equals("Evoker")) {
-			mob = new EntityEvoker(world);
-			addAtributes();
+			oldMobClass = new EntityEvoker(world);
 		} else if (type.equals("Ghast")) {
-			mob = new EntityGhast(world);
-			addAtributes();
+			oldMobClass = new EntityGhast(world);
 		} else if (type.equals("Guardian")) {
-			mob = new EntityGuardian(world);
-			addAtributes();
-		} else if (type.equals("Husk")) {
-			mob = new EntityZombieHusk(world);
-			addAtributes();
+			oldMobClass = new EntityGuardian(world);
+		} else if (type.equals("Zombie Husk")) {
+			oldMobClass = new EntityZombieHusk(world);
 		} else if (type.equals("Magma Cube")) {
-			mob = new EntityMagmaCube(world);
-			addAtributes();
+			oldMobClass = new EntityMagmaCube(world);
 		} else if (type.equals("Shulker")) {
-			mob = new EntityShulker(world);
-			addAtributes();
+			oldMobClass = new EntityShulker(world);
 		} else if (type.equals("Silverfish")) {
-			mob = new EntitySilverfish(world);
-			addAtributes();
+			oldMobClass = new EntitySilverfish(world);
 		} else if (type.equals("Skeleton")) {
-			mob = new EntitySkeleton(world);
-			addAtributes();
+			/*if(OnEgg==true){
+				addCustomEntity(51, "skeleton", CustomSkeleton.class);
+			}
+			else if(OnCommand==true){
+				oldMobClass = new CustomSkeleton(world);
+			}*/
+			oldMobClass = new EntitySkeleton(world);
+			newMobClass = new CustomSkeleton(world);
 		} else if (type.equals("Slime")) {
-			mob = new EntitySlime(world);
-			addAtributes();
-		} else if (type.equals("Stray")) {
-			mob = new EntitySkeletonStray(world);
-			addAtributes();
+			oldMobClass = new EntitySlime(world);
+		} else if (type.equals("Skeleton Stray")) {
+			oldMobClass = new EntitySkeletonStray(world);
 		} else if (type.equals("Vex")) {
-			mob = new EntityVex(world);
-			addAtributes();
+			oldMobClass = new EntityVex(world);
 		} else if (type.equals("Vindicator")) {
-			mob = new EntityVindicator(world);
-			addAtributes();
+			oldMobClass = new EntityVindicator(world);
 		} else if (type.equals("Witch")) {
-			mob = new EntityWitch(world);
-			addAtributes();
-		} else if (type.equals("Wither Skeleton")) {
-			mob = new EntitySkeletonWither(world);
-			addAtributes();
+			oldMobClass = new EntityWitch(world);
+		} else if (type.equals("Skeleton Wither")) {
+			oldMobClass = new EntitySkeletonWither(world);
 		} else if (type.equals("Zombie")) {
-			mob = new EntityZombie(world);
-			ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
-			net.minecraft.server.v1_11_R1.ItemStack nms = CraftItemStack.asNMSCopy(cp);
-			mob.setSlot(EnumItemSlot.CHEST,nms);
-			mob.setSprinting(true);
-			addAtributes();
+			oldMobClass = new EntityZombie(world);
 		} else if (type.equals("Zombie Villager")) {
-			mob = new EntityZombieVillager(world);
-			addAtributes();
+			oldMobClass = new EntityZombieVillager(world);
 		}
 		///////////////////////////////////////////
-		// Tameable mobs ///////////////////////////
+		// Tameable oldMobClasss ///////////////////////////
 		///////////////////////////////////////////
-		else if (type.equals("Donkey")) {
-			mob = new EntityHorseDonkey(world);
-			addAtributes();
+		else if (type.equals("Horse Donkey")) {
+			oldMobClass = new EntityHorseDonkey(world);
 		} else if (type.equals("Horse")) {
-			mob = new EntityHorse(world);
-			addAtributes();
+			oldMobClass = new EntityHorse(world);
 		} else if (type.equals("Llama")) {
-			mob = new EntityLlama(world);
-			addAtributes();
+			oldMobClass = new EntityLlama(world);
 		} else if (type.equals("Mule")) {
-			mob = new EntityHorseMule(world);
-			addAtributes();
+			oldMobClass = new EntityHorseMule(world);
 		} else if (type.equals("Ocelot")) {
-			mob = new EntityOcelot(world);
-			addAtributes();
+			oldMobClass = new EntityOcelot(world);
 		} else if (type.equals("Wolf")) {
-			mob = new EntityWolf(world);
-			addAtributes();
+			oldMobClass = new EntityWolf(world);
 		}
 		///////////////////////////////////////////
-		// Utility mobs ///////////////////////////
+		// Utility oldMobClasss ///////////////////////////
 		///////////////////////////////////////////
 		else if (type.equals("Iron Golem")) {
-			mob = new EntityIronGolem(world);
-			addAtributes();
-		} else if (type.equals("Snow Golem")) {
-			mob = new EntitySnowman(world);
-			addAtributes();
+			oldMobClass = new EntityIronGolem(world);
+		} else if (type.equals("Snowman")) {
+			oldMobClass = new EntitySnowman(world);
 		}
 		///////////////////////////////////////////
-		// Boss mobs ///////////////////////////
+		// Boss oldMobClasss ///////////////////////////
 		///////////////////////////////////////////
 		else if (type.equals("Ender Dragon")) {
-			mob = new EntityEnderDragon(world);
-			addAtributes();
+			oldMobClass = new EntityEnderDragon(world);
 		} else if (type.equals("Wither")) {
-			mob = new EntityWither(world);
-			addAtributes();
+			oldMobClass = new EntityWither(world);
 		}
 		///////////////////////////////////////////
-		// Unused mobs ///////////////////////////
+		// Unused oldMobClasss ///////////////////////////
 		// Need Giant;
 		///////////////////////////////////////////
-		else if (type.equals("Killer Bunny")) {
-			mob = new EntityRabbit(world);
-			((EntityRabbit) mob).setRabbitType(99);
-			addAtributes();
-		} else if (type.equals("Zombie Horse")) {
-			mob = new EntityHorseZombie(world);
-			addAtributes();
+		else if (type.equals("Horse Zombie")) {
+			oldMobClass = new EntityHorseZombie(world);
 		}
 		///////////////////////////////////////////
-		// Passive mobs ///////////////////////////
+		// Passive oldMobClasss ///////////////////////////
 		///////////////////////////////////////////
 		else if (type.equals("Bat")) {
-			mob = new EntityBat(world);
-			addAtributes();
+			oldMobClass = new EntityBat(world);
 		} else if (type.equals("Chicken")) {
-			mob = new EntityChicken(world);
-			addAtributes();
+			oldMobClass = new EntityChicken(world);
 		} else if (type.equals("Cow")) {
-			mob = new EntityCow(world);
-			addAtributes();
-		} else if (type.equals("Mooshroom")) {
-			mob = new EntityMushroomCow(world);
-			addAtributes();
+			oldMobClass = new EntityCow(world);
+		} else if (type.equals("Mooshroom Cow")) {
+			oldMobClass = new EntityMushroomCow(world);
 		} else if (type.equals("Pig")) {
-			mob = new EntityPig(world);
-			addAtributes();
+			oldMobClass = new EntityPig(world);
 		} else if (type.equals("Rabbit")) {
-			mob = new EntityRabbit(world);
-			addAtributes();
+			oldMobClass = new EntityRabbit(world);
 		} else if (type.equals("Sheep")) {
-			mob = new EntitySheep(world);
-			addAtributes();
-		} else if (type.equals("Skeleton Horse")) {
-			mob = new EntityHorseSkeleton(world);
-			addAtributes();
+			oldMobClass = new EntitySheep(world);
+		} else if (type.equals("Horse Skeleton")) {
+			oldMobClass = new EntityHorseSkeleton(world);
 		} else if (type.equals("Squid")) {
-			mob = new EntitySquid(world);
-			addAtributes();
+			oldMobClass = new EntitySquid(world);
 		} else if (type.equals("Villager")) {
-			mob = new EntityVillager(world);
-			addAtributes();
+			oldMobClass = new EntityVillager(world);
 		}
 		///////////////////////////////////////////
-		// Construct mob ///////////////////////////
+		// Construct oldMobClass ///////////////////////////
 		///////////////////////////////////////////
-
-		mob.setCustomName(ChatColor.RED + name);
-		mob.setCustomNameVisible(true);
-		
-		MinecraftKey minecraftKey = new MinecraftKey(type+name);
-        this.customEntities.put(minecraftKey, mob);
-        this.customEntityIds.put(mob, mob.getId());
-		world.addEntity(mob);
-		
+		sender.sendMessage("1="+ oldMobClass.getClass() + ":: 2="+oldMobClass.getClass().getClass()+":: ID= ");
+		addCustomEntity(51,"Skeleton",newMobClass.getClass());
 
 	}
 
-	public void addAtributes() {
+	////////////////////////////////////////////
+	/// Add all atribiuts ////////////////////////////
+	////////////////////////////////////////////
+	public static void addAtributess(EntityLiving customEntity) {
+		arrmor(customEntity, item);
+		name(customEntity,visable);
+	}
+	////////////////////////////////////////////
+	/// Editing Mob ////////////////////////////
+	////////////////////////////////////////////
+	public static void arrmor(EntityLiving customEntity, net.minecraft.server.v1_11_R1.ItemStack item) {
+		customEntity.setSlot(EnumItemSlot.CHEST, item);
+	}
+	public static void name(EntityLiving customEntity, boolean visable){
+		customEntity.setCustomName(name);
+		customEntity.setCustomNameVisible(visable);
+	}
+	public static void setName(String name){
+		CreateMob.name=name;
+	}
+	public static void worldAddEntity(Entity entity){
+		for(int i=0; i<worldAddEntity.size(); i++){
+			if(entity.getName()==worldAddEntity.get(i)){
+				System.out.println("Entity with that name ("+entity.getName()+") is alrady on server");
+				return;
+			}
+		}
+		world.addEntity(entity);
+		worldAddEntity.add(entity.getName());
+	}
+	
+	public static void worldRemoveEntity(Entity entity){
+		for(int i=0; i<worldAddEntity.size(); i++){
+			if(entity.getName()==worldAddEntity.get(i)){
+				world.removeEntity(entity);
+				worldAddEntity.remove(i);
+				return;
+			}
+		}
+		System.out.println("Entity with that name ("+entity.getName()+") is not exist on this server");
 	}
 
+	////////////////////////////////////////////
+	/// Add mob on egg////////////////////////////
+	////////////////////////////////////////////
+	public static void addCustomEntity(int entityId, String entityName, Class<? extends Entity> entityClass) {
+		for(int i=0; i<onEggAndSummon.size(); i++){
+			if(entityId==(int)onEggAndSummon.get(i)){
+				if(entityClass==onEggAndSummonWithOldMobClass.get(entityId)){
+					onEggAndSummon.remove(entityId);
+				}
+				MinecraftKey minecraftKey = new MinecraftKey(entityName);
+				EntityTypes.b.a(entityId, minecraftKey, entityClass);
+				return;
+			}
+		}
+		onEggAndSummon.add(entityId);
+		onEggAndSummonWithOldMobClass.put(entityId, oldMobClass.getClass());
+		MinecraftKey minecraftKey = new MinecraftKey(entityName);
+		EntityTypes.b.a(entityId, minecraftKey, entityClass);
+	}
 }
+// this.nowa.put("nazwa",EntitySkeleton.class);
+// MinecraftKey minecraftKey = new MinecraftKey(type + name);
+// this.customEntities.put(minecraftKey, mob);
+// this.customEntityIds.put(mob, mob.getId());
+// addCustomEntity(51, type.toLowerCase(), mob.getClass());
+// world.addEntity(mob);
+// mob.setLocation(loc.getX(),loc.getY() , loc.getZ(), loc.getPitch(),
+// loc.getYaw());
+// world.addEntity(mob, SpawnReason.SPAWNER_EGG);
+// EntityRegistry.overrideEntity(CustomClass.class);
+// addCustomEntity(51,type.toLowerCase(),CustomSkeleton.class);

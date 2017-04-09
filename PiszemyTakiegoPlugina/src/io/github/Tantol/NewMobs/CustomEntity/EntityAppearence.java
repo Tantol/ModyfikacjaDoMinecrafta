@@ -1,4 +1,4 @@
-package io.github.Tantol.CustomMonsters;
+package io.github.Tantol.NewMobs.CustomEntity;
 
 public enum EntityAppearence {
 
@@ -90,4 +90,6 @@ public enum EntityAppearence {
 	private EntityAppearence(int id) {
 		this.id = id;
 	}
+
+	
 }

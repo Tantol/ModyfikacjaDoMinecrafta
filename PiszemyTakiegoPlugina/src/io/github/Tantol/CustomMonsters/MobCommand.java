@@ -1,4 +1,4 @@
-package io.github.Tantol.NewMobs;
+package io.github.Tantol.CustomMonsters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +26,12 @@ import net.minecraft.server.v1_11_R1.EntityChicken;
 import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityRabbit;
 import net.minecraft.server.v1_11_R1.EntitySkeleton;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
 public class MobCommand extends CommandExecute implements CommandExecutor, Listener {
 	private String ranga = "Player";
-	private ArrayList<CreateMob> mobs = new ArrayList<CreateMob>();
 	public MobCommand() {}
 
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
@@ -51,9 +52,9 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 				//skele.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
 				//world.addEntity(skele);
 				//world.addEntity(skele2);
-				//MyVillager.spawn(loc);
-				//MyZombie.spawn(loc);
-				mobs.add(new CreateMob(sender,"Skeleton","CzescJestemSzymon",true, world, loc));
+				MyVillager.spawn(loc);
+				MyZombie.spawn(loc);
+				
 				return true;
 			}
 		} else {

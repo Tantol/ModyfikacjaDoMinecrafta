@@ -2,6 +2,14 @@ package io.github.Tantol.CustomMonsters;
 
 import org.bukkit.entity.EntityType;
 
+import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
+import io.github.Tantol.CustomMonsters.Xxx_class.MyZombie;
+import net.minecraft.server.v1_11_R1.Entity;
+import net.minecraft.server.v1_11_R1.EntityTypes;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
+import net.minecraft.server.v1_11_R1.MinecraftKey;
+
 final public class EntityRegistrer {
 
 	/**
@@ -122,4 +130,17 @@ final public class EntityRegistrer {
 	public static final void register(final String name, final EntityAppearence appearence, final EntityType type, final Class<?> nmsClass, final Class<?> customClass) {
 		register(name, appearence.id, type, nmsClass, customClass);
 	}
+	
+	public static final void addAllCustomEntity(){
+		
+		register("MyCustomVillager", EntityAppearence.VILLAGER, EntityType.VILLAGER, EntityVillager.class, MyVillager.class);
+		register("MyCustomZombie", EntityAppearence.ZOMBIE, EntityType.ZOMBIE, EntityZombie.class, MyZombie.class);
+		addCustomEntity(54,"zombie",MyZombie.class);
+		
+	}
+	
+	public static void addCustomEntity(int entityId, String entityName, Class<? extends Entity> entityClass) {
+        MinecraftKey minecraftKey = new MinecraftKey(entityName);
+        EntityTypes.b.a(entityId, minecraftKey, entityClass);
+    }
 }
