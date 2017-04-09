@@ -15,9 +15,13 @@ public class ListWithAllCustomMobs {
 	public ListWithAllCustomMobs(){}
 	public void add(CreateMob mob, boolean onComand, boolean onEggSummon){
 		if(onComand){
+			mob.worldAddEntity();
+			worldAddEntity.add(mob.getName()+"_"+mob.getType());
 			
 		}
 		else if(onEggSummon){
+			mob.addCustomEntity();
+			onEggAndSummon.add(mob.getId());
 			
 		}
 	}

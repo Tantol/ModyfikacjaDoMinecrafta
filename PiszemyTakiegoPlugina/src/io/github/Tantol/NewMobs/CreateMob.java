@@ -85,6 +85,7 @@ public class CreateMob extends EntityCreature {
 	static ItemStack cp;
 	static net.minecraft.server.v1_11_R1.ItemStack item =null;
 	static boolean visable=false;
+	int entityId;
 
 	//private final BiMap<MinecraftKey, EntityLiving> customEntities = HashBiMap.create();
 	//private final BiMap<EntityLiving, MinecraftKey> customEntityClasses = this.customEntities.inverse();
@@ -270,15 +271,15 @@ public class CreateMob extends EntityCreature {
 	public static void setName(String name){
 		CreateMob.name=name;
 	}
-	public static void worldAddEntity(Entity entity){
+	public void worldAddEntity(){
 		for(int i=0; i<worldAddEntity.size(); i++){
-			if(entity.getName()==worldAddEntity.get(i)){
-				System.out.println("Entity with that name ("+entity.getName()+") is alrady on server");
+			if(newMobClass.getName()==worldAddEntity.get(i)){
+				System.out.println("Entity with that name ("+newMobClass.getName()+") is alrady on server");
 				return;
 			}
 		}
-		world.addEntity(entity);
-		worldAddEntity.add(entity.getName());
+		world.addEntity(newMobClass);
+		worldAddEntity.add(newMobClass.getName());
 	}
 	
 	public static void worldRemoveEntity(Entity entity){
@@ -310,6 +311,18 @@ public class CreateMob extends EntityCreature {
 		onEggAndSummonWithOldMobClass.put(entityId, oldMobClass.getClass());
 		MinecraftKey minecraftKey = new MinecraftKey(entityName);
 		EntityTypes.b.a(entityId, minecraftKey, entityClass);
+	}
+	public void addCustomEntity(){
+		addCustomEntity(entityId,type,newMobClass.getClass());
+	}
+	public String getName(){
+		return name;
+	}
+	public String getType(){
+		return type;
+	}
+	public int getId(){
+		return entityId;
 	}
 }
 // this.nowa.put("nazwa",EntitySkeleton.class);
