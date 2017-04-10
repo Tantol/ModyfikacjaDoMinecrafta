@@ -80,7 +80,7 @@ public enum EntityAppearence {
 	RABBIT(101),
 	POLAR_BEAR(102),
 	LLAMA(103),
-	LLAMA_SPIT(104),
+	//LLAMA_SPIT(104),
 	VILLAGER(120),
 	ENDER_CRYSTAL(200);
 	

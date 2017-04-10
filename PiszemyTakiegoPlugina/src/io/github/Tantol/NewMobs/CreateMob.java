@@ -83,24 +83,28 @@ public class CreateMob extends EntityCreature {
 	static WorldServer world;
 	static Location loc;
 	static ItemStack cp;
-	static net.minecraft.server.v1_11_R1.ItemStack item =null;
-	static boolean visable=false;
-	int entityId;
+	static net.minecraft.server.v1_11_R1.ItemStack item = null;
+	static boolean visable = false;
+	static int entityId;
 
-	//private final BiMap<MinecraftKey, EntityLiving> customEntities = HashBiMap.create();
-	//private final BiMap<EntityLiving, MinecraftKey> customEntityClasses = this.customEntities.inverse();
-	private final static Map<Integer,Class<? extends Entity>> onEggAndSummonWithOldMobClass= new HashMap<>();
-	private final static List<Integer> onEggAndSummon = new ArrayList<Integer> ();
+	// private final BiMap<MinecraftKey, EntityLiving> customEntities =
+	// HashBiMap.create();
+	// private final BiMap<EntityLiving, MinecraftKey> customEntityClasses =
+	// this.customEntities.inverse();
+	private final static Map<Integer, Class<? extends Entity>> onEggAndSummonWithOldMobClass = new HashMap<>();
+	private final static List<Integer> onEggAndSummon = new ArrayList<Integer>();
 	private final static List<String> worldAddEntity = new ArrayList<String>();
 	private final String types[] = { "Cave Spider", "Enderman", "Polar Bear", "Spider", "Zombie Pigman", "Blaze",
 			"Creeper", "Elder Guardian", "Endermite", "Evoker", "Ghast", "Guardian", "Zombie Husk", "Magma Cube",
 			"Shulker", "Silverfish", "Skeleton", "Slime", "Skeleton Stray", "Vex", "Vindicator", "Witch",
 			"Skeleton Wither", "Zombie", "Zombie Villager", "Horse Donkey", "Horse", "Llama", "Mule", "Ocelot", "Wolf",
-			"Iron Golem", "Snowman", "Ender Dragon", "Wither", "Horse Zombie", "Bat", "Chicken", "Cow", "Mooshroom Cow",
-			"Pig", "Rabbit", "Sheep", "Horse Skeleton", "Squid", "Villager" };
-	private final int typesId[]={59,58,102,52,57,61 };
-	//blaze 61
-	//private final BiMap<String, Class<? extends Entity>> nowa = HashBiMap.create();
+			"Iron Golem", "Snowman", "Ender Dragon", "Wither", "Horse Zombie", "Bat", "Chicken", "Cow", "Pig", "Rabbit",
+			"Sheep", "Horse Skeleton", "Squid", "Villager" };
+	private final int typesId[] = { 59, 58, 102, 52, 57, 61, 50, 4, 67, 34, 56, 68, 23, 62, 69, 60, 51, 55, 6, 35, 36,
+			66, 5, 54, 27, 31, 100, 103, 32, 98, 95, 99, 97, 63, 64, 29, 65, 93, 92, 90, 101, 91, 28, 94, 120 };
+	// blaze 61
+	// private final BiMap<String, Class<? extends Entity>> nowa =
+	// HashBiMap.create();
 
 	public CreateMob(CommandSender sender, String type, String name, boolean visable, WorldServer world, Location loc) {
 		super(world);
@@ -109,8 +113,17 @@ public class CreateMob extends EntityCreature {
 		CreateMob.world = world;
 		CreateMob.loc = loc;
 		ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
-		CreateMob.item= CraftItemStack.asNMSCopy(cp);
-		CreateMob.visable=visable;
+		CreateMob.item = CraftItemStack.asNMSCopy(cp);
+		CreateMob.visable = visable;
+		if(types.length!=typesId.length){
+			System.out.print("Length of available types is not similar with length of their id");
+			return;
+		}
+		for (int i = 0; i < types.length; i++) {
+			if (CreateMob.type.equals(types[i])) {
+				CreateMob.entityId = typesId[i];
+			}
+		}
 
 		///////////////////////////////////////////
 		// Neutral mobs ///////////////////////////
@@ -155,12 +168,11 @@ public class CreateMob extends EntityCreature {
 		} else if (type.equals("Silverfish")) {
 			oldMobClass = new EntitySilverfish(world);
 		} else if (type.equals("Skeleton")) {
-			/*if(OnEgg==true){
-				addCustomEntity(51, "skeleton", CustomSkeleton.class);
-			}
-			else if(OnCommand==true){
-				oldMobClass = new CustomSkeleton(world);
-			}*/
+			/*
+			 * if(OnEgg==true){ addCustomEntity(51, "skeleton",
+			 * CustomSkeleton.class); } else if(OnCommand==true){ oldMobClass =
+			 * new CustomSkeleton(world); }
+			 */
 			oldMobClass = new EntitySkeleton(world);
 			newMobClass = new CustomSkeleton(world);
 		} else if (type.equals("Slime")) {
@@ -228,8 +240,6 @@ public class CreateMob extends EntityCreature {
 			oldMobClass = new EntityChicken(world);
 		} else if (type.equals("Cow")) {
 			oldMobClass = new EntityCow(world);
-		} else if (type.equals("Mooshroom Cow")) {
-			oldMobClass = new EntityMushroomCow(world);
 		} else if (type.equals("Pig")) {
 			oldMobClass = new EntityPig(world);
 		} else if (type.equals("Rabbit")) {
@@ -246,9 +256,6 @@ public class CreateMob extends EntityCreature {
 		///////////////////////////////////////////
 		// Construct oldMobClass ///////////////////////////
 		///////////////////////////////////////////
-		sender.sendMessage("1="+ oldMobClass.getClass() + ":: 2="+oldMobClass.getClass().getClass()+":: ID= ");
-		addCustomEntity(51,"Skeleton",newMobClass.getClass());
-
 	}
 
 	////////////////////////////////////////////
@@ -256,73 +263,74 @@ public class CreateMob extends EntityCreature {
 	////////////////////////////////////////////
 	public static void addAtributess(EntityLiving customEntity) {
 		arrmor(customEntity, item);
-		name(customEntity,visable);
+		name(customEntity, visable);
 	}
+
 	////////////////////////////////////////////
 	/// Editing Mob ////////////////////////////
 	////////////////////////////////////////////
 	public static void arrmor(EntityLiving customEntity, net.minecraft.server.v1_11_R1.ItemStack item) {
 		customEntity.setSlot(EnumItemSlot.CHEST, item);
 	}
-	public static void name(EntityLiving customEntity, boolean visable){
+
+	public static void name(EntityLiving customEntity, boolean visable) {
 		customEntity.setCustomName(name);
 		customEntity.setCustomNameVisible(visable);
 	}
-	public static void setName(String name){
-		CreateMob.name=name;
+
+	public static void setName(String name) {
+		CreateMob.name = name;
 	}
-	public void worldAddEntity(){
-		for(int i=0; i<worldAddEntity.size(); i++){
-			if(newMobClass.getName()==worldAddEntity.get(i)){
-				System.out.println("Entity with that name ("+newMobClass.getName()+") is alrady on server");
-				return;
-			}
-		}
+
+	public void worldAddEntity() {
 		world.addEntity(newMobClass);
-		worldAddEntity.add(newMobClass.getName());
 	}
-	
-	public static void worldRemoveEntity(Entity entity){
-		for(int i=0; i<worldAddEntity.size(); i++){
-			if(entity.getName()==worldAddEntity.get(i)){
-				world.removeEntity(entity);
+
+	public static void worldRemoveEntity() {
+		for (int i = 0; i < worldAddEntity.size(); i++) {
+			if (newMobClass.getName() == worldAddEntity.get(i)) {
+				world.removeEntity(newMobClass);
 				worldAddEntity.remove(i);
 				return;
 			}
 		}
-		System.out.println("Entity with that name ("+entity.getName()+") is not exist on this server");
+		System.out.println("Entity with that name (" + newMobClass.getName() + ") is not exist on this server");
 	}
 
 	////////////////////////////////////////////
 	/// Add mob on egg////////////////////////////
 	////////////////////////////////////////////
 	public static void addCustomEntity(int entityId, String entityName, Class<? extends Entity> entityClass) {
-		for(int i=0; i<onEggAndSummon.size(); i++){
-			if(entityId==(int)onEggAndSummon.get(i)){
-				if(entityClass==onEggAndSummonWithOldMobClass.get(entityId)){
-					onEggAndSummon.remove(entityId);
-				}
-				MinecraftKey minecraftKey = new MinecraftKey(entityName);
-				EntityTypes.b.a(entityId, minecraftKey, entityClass);
-				return;
-			}
-		}
-		onEggAndSummon.add(entityId);
-		onEggAndSummonWithOldMobClass.put(entityId, oldMobClass.getClass());
 		MinecraftKey minecraftKey = new MinecraftKey(entityName);
 		EntityTypes.b.a(entityId, minecraftKey, entityClass);
 	}
-	public void addCustomEntity(){
-		addCustomEntity(entityId,type,newMobClass.getClass());
+
+	public void addCustomEntity() {
+		addCustomEntity(entityId, type, newMobClass.getClass());
 	}
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	public String getType(){
+
+	public String getType() {
 		return type;
 	}
-	public int getId(){
+
+	public int getId() {
 		return entityId;
+	}
+
+	public WorldServer getWorld() {
+		return world;
+	}
+
+	public EntityLiving getOldMobClass() {
+		return oldMobClass;
+	}
+
+	public EntityLiving getNewMobClass() {
+		return newMobClass;
 	}
 }
 // this.nowa.put("nazwa",EntitySkeleton.class);
