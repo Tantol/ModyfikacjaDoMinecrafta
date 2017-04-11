@@ -115,7 +115,7 @@ public class CreateMob extends EntityCreature {
 		ItemStack cp = new ItemStack(Material.GOLD_CHESTPLATE);
 		CreateMob.item = CraftItemStack.asNMSCopy(cp);
 		CreateMob.visable = visable;
-		if(types.length!=typesId.length){
+		if (types.length != typesId.length) {
 			System.out.print("Length of available types is not similar with length of their id");
 			return;
 		}
@@ -282,10 +282,19 @@ public class CreateMob extends EntityCreature {
 		CreateMob.name = name;
 	}
 
+	////////////////////////////////////////////
+	/// Add / remove mob on eggSummon and to world////////////////////////////
+	////////////////////////////////////////////
+	//add on EggSummon
+	public void addCustomEntity() {
+		MinecraftKey minecraftKey = new MinecraftKey(type);
+		EntityTypes.b.a(entityId, minecraftKey, newMobClass.getClass());
+	}
+	//add to world (can be used from command)
 	public void worldAddEntity() {
 		world.addEntity(newMobClass);
 	}
-
+//remove from "to world"
 	public static void worldRemoveEntity() {
 		for (int i = 0; i < worldAddEntity.size(); i++) {
 			if (newMobClass.getName() == worldAddEntity.get(i)) {
@@ -296,18 +305,9 @@ public class CreateMob extends EntityCreature {
 		}
 		System.out.println("Entity with that name (" + newMobClass.getName() + ") is not exist on this server");
 	}
-
 	////////////////////////////////////////////
-	/// Add mob on egg////////////////////////////
+	/// Get / set from basic info////////////////////////////
 	////////////////////////////////////////////
-	public static void addCustomEntity(int entityId, String entityName, Class<? extends Entity> entityClass) {
-		MinecraftKey minecraftKey = new MinecraftKey(entityName);
-		EntityTypes.b.a(entityId, minecraftKey, entityClass);
-	}
-
-	public void addCustomEntity() {
-		addCustomEntity(entityId, type, newMobClass.getClass());
-	}
 
 	public String getName() {
 		return name;
