@@ -294,17 +294,14 @@ public class CreateMob extends EntityCreature {
 	public void worldAddEntity() {
 		world.addEntity(newMobClass);
 	}
-//remove from "to world"
-	public static void worldRemoveEntity() {
-		for (int i = 0; i < worldAddEntity.size(); i++) {
-			if (newMobClass.getName() == worldAddEntity.get(i)) {
-				world.removeEntity(newMobClass);
-				worldAddEntity.remove(i);
-				return;
-			}
-		}
-		System.out.println("Entity with that name (" + newMobClass.getName() + ") is not exist on this server");
+	public void removeWorldAddEntity(){
+		world.removeEntity(newMobClass);
 	}
+	public void removeCustomEntity(){
+		MinecraftKey minecraftKey = new MinecraftKey(type);
+		EntityTypes.b.a(entityId, minecraftKey, oldMobClass.getClass());
+	}
+	
 	////////////////////////////////////////////
 	/// Get / set from basic info////////////////////////////
 	////////////////////////////////////////////

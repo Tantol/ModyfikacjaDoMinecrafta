@@ -59,7 +59,7 @@ public class ListWithAllCustomMobs {
 				mob.worldAddEntity();
 				onCommandList.add(info);
 				System.out.println(
-						"Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was successful added on server ("+mob.getWorld()+").");
+						"Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was successful added (set to use on command) on server ("+mob.getWorld()+").");
 			}
 
 		}
@@ -78,11 +78,15 @@ public class ListWithAllCustomMobs {
 					}*/
 					mob.addCustomEntity();
 					wasOverwritten=true;
+					System.out.println(
+							"Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was successful overwritten (set to Summon on egg) on server ("+mob.getWorld()+").");
 				}
 			}
 			if((!wasAddedQuestionMark)&&(!wasOverwritten)){
 				mob.addCustomEntity();
 				onEggAndSummonList.add(mob);
+				System.out.println(
+						"Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was successful added (set to Summon on egg) on server ("+mob.getWorld()+").");
 			}
 
 		}
@@ -93,17 +97,24 @@ public class ListWithAllCustomMobs {
 			boolean wasRemovedQuestionMark=false;
 			for(int i=0; i<onCommandList.size(); i++){
 				if(info.equals(onCommandList.get(i))){
-					mob.getWorld().removeEntity(mob);
+					mob.removeWorldAddEntity();
 					onCommandList.remove(i);
 					wasRemovedQuestionMark=true;
 					System.out.println("Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was successful removed from server ("+mob.getWorld()+").");
 				}
 			}
 			if(!wasRemovedQuestionMark){
-				System.out.println("Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was not removed from server ("+mob.getWorld()+"), because that mob is not existing on server.");
+				System.out.println("Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was not removed from server ("+mob.getWorld()+"), because that mob is not existing on it.");
 			}
 		}
 		if(onEggAndSummon){
+			for(int i=0; i<onEggAndSummonList.size(); i++){
+				if(mob.equals(onEggAndSummonList.get(i))){
+					mob.removeCustomEntity();
+					onEggAndSummonList.remove(i);
+					System.out.println("Entity (" + mob.getType() + ") with name (" + mob.getName() + ") was removed from set to Summon on egg (besic class was added on his place)"+mob.getWorld());
+				}
+			}
 			
 		}
 		
