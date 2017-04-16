@@ -5,21 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
-import io.github.Tantol.NewMobs.CustomEntity.CustomSkeleton;
-import io.github.Tantol.NewMobs.CustomEntity.EntityAppearence;
+import io.github.Tantol.NewMobs.CustomEntity.*;
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityBat;
 import net.minecraft.server.v1_11_R1.EntityBlaze;
@@ -44,7 +38,6 @@ import net.minecraft.server.v1_11_R1.EntityIronGolem;
 import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityLlama;
 import net.minecraft.server.v1_11_R1.EntityMagmaCube;
-import net.minecraft.server.v1_11_R1.EntityMushroomCow;
 import net.minecraft.server.v1_11_R1.EntityOcelot;
 import net.minecraft.server.v1_11_R1.EntityPig;
 import net.minecraft.server.v1_11_R1.EntityPigZombie;
@@ -72,7 +65,6 @@ import net.minecraft.server.v1_11_R1.EntityZombieHusk;
 import net.minecraft.server.v1_11_R1.EntityZombieVillager;
 import net.minecraft.server.v1_11_R1.EnumItemSlot;
 import net.minecraft.server.v1_11_R1.MinecraftKey;
-import net.minecraft.server.v1_11_R1.World;
 import net.minecraft.server.v1_11_R1.WorldServer;
 
 public class CreateMob extends EntityCreature {
@@ -106,7 +98,7 @@ public class CreateMob extends EntityCreature {
 	// private final BiMap<String, Class<? extends Entity>> nowa =
 	// HashBiMap.create();
 
-	public CreateMob(CommandSender sender, String type, String name, boolean visable, WorldServer world, Location loc) {
+	public CreateMob(String type, String name, boolean visable, WorldServer world, Location loc) {
 		super(world);
 		CreateMob.type = type;
 		CreateMob.name = name;
@@ -129,14 +121,19 @@ public class CreateMob extends EntityCreature {
 		// Neutral mobs ///////////////////////////
 		///////////////////////////////////////////
 		if (type.equals("Cave Spider")) {
+			newMobClass = new CustomCaveSpider(world);
 			oldMobClass = new EntityCaveSpider(world);
 		} else if (type.equals("Enderman")) {
+			newMobClass = new CustomEnderman(world);
 			oldMobClass = new EntityEnderman(world);
 		} else if (type.equals("Polar Bear")) {
+			newMobClass = new CustomPolarBear(world);
 			oldMobClass = new EntityPolarBear(world);
 		} else if (type.equals("Spider")) {
+			newMobClass = new CustomSpider(world);
 			oldMobClass = new EntitySpider(world);
 		} else if (type.equals("Pig Zombie")) {
+			newMobClass = new CustomPigZombie(world);
 			oldMobClass = new EntityPigZombie(world);
 		}
 		///////////////////////////////////////////
@@ -168,11 +165,6 @@ public class CreateMob extends EntityCreature {
 		} else if (type.equals("Silverfish")) {
 			oldMobClass = new EntitySilverfish(world);
 		} else if (type.equals("Skeleton")) {
-			/*
-			 * if(OnEgg==true){ addCustomEntity(51, "skeleton",
-			 * CustomSkeleton.class); } else if(OnCommand==true){ oldMobClass =
-			 * new CustomSkeleton(world); }
-			 */
 			oldMobClass = new EntitySkeleton(world);
 			newMobClass = new CustomSkeleton(world);
 		} else if (type.equals("Slime")) {
@@ -188,6 +180,7 @@ public class CreateMob extends EntityCreature {
 		} else if (type.equals("Skeleton Wither")) {
 			oldMobClass = new EntitySkeletonWither(world);
 		} else if (type.equals("Zombie")) {
+			newMobClass = new CustomZombie(world);
 			oldMobClass = new EntityZombie(world);
 		} else if (type.equals("Zombie Villager")) {
 			oldMobClass = new EntityZombieVillager(world);
@@ -257,13 +250,36 @@ public class CreateMob extends EntityCreature {
 		// Construct oldMobClass ///////////////////////////
 		///////////////////////////////////////////
 	}
+	public String toString(){
+		return "EntityType-> "+type+". Name-> "+name+". World-> "+world+".";
+	}
+	
+	public void spawnMob(Location location){
+		try {
+			if (!location.getChunk().isLoaded()) location.getChunk().load();
+			newMobClass.setPosition(location.getX(), location.getY(), location.getZ());
+			(((CraftWorld) location.getWorld()).getHandle()).addEntity(newMobClass, SpawnReason.CUSTOM);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	////////////////////////////////////////////
 	/// Add all atribiuts ////////////////////////////
 	////////////////////////////////////////////
 	public static void addAtributess(EntityLiving customEntity) {
-		arrmor(customEntity, item);
-		name(customEntity, visable);
+		try{
+		arrmor(customEntity, item);}
+		catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Cant add arrmor to Entity"+type);
+		}
+		try{
+		name(customEntity, visable);}
+		catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Cant add name to Entity"+type);
+		}
 	}
 
 	////////////////////////////////////////////
@@ -292,7 +308,7 @@ public class CreateMob extends EntityCreature {
 	}
 	//add to world (can be used from command)
 	public void worldAddEntity() {
-		world.addEntity(newMobClass);
+		world.addEntity(newMobClass,SpawnReason.CUSTOM);
 	}
 	public void removeWorldAddEntity(){
 		world.removeEntity(newMobClass);

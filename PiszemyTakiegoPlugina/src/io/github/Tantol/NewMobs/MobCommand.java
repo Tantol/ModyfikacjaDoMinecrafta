@@ -21,6 +21,7 @@ import io.github.Tantol.ConfigManager;
 import io.github.Tantol.Dungeon;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyVillager;
 import io.github.Tantol.CustomMonsters.Xxx_class.MyZombie;
+import io.github.Tantol.NewMobs.CustomEntity.CustomSkeleton;
 import net.minecraft.server.v1_11_R1.CommandExecute;
 import net.minecraft.server.v1_11_R1.EntityChicken;
 import net.minecraft.server.v1_11_R1.EntityLiving;
@@ -30,7 +31,7 @@ import net.minecraft.server.v1_11_R1.WorldServer;
 
 public class MobCommand extends CommandExecute implements CommandExecutor, Listener {
 	private String ranga = "Player";
-	private ArrayList<CreateMob> mobs = new ArrayList<CreateMob>();
+	private ListWithAllCustomMobs mobs = new ListWithAllCustomMobs();
 	public MobCommand() {}
 
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmnd, String string, String[] args) {
@@ -53,7 +54,12 @@ public class MobCommand extends CommandExecute implements CommandExecutor, Liste
 				//world.addEntity(skele2);
 				//MyVillager.spawn(loc);
 				//MyZombie.spawn(loc);
-				mobs.add(new CreateMob(sender,"Skeleton","CzescJestemSzymon",true, world, loc));
+				//mobs.add(new CreateMob(sender,"Skeleton","CzescJestemSzymon",true, world, loc));
+				CreateMob szymon = new CreateMob("Skeleton", "szymon", true, world, loc);
+				mobs.add(szymon, true, true);
+				mobs.spawnMob(loc, szymon);
+				mobs.viewAllOnCommand();
+				mobs.viewAllOnEggAndSummon();
 				return true;
 			}
 		} else {
